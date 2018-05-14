@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peshitta.nl", "Peshitta_nl\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peshitta.Data", "Peshitta.Data\Peshitta.Data.csproj", "{4F10B22A-D4D4-4466-B25D-AEB957C7E416}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Peshitta_nl.SPA", "Peshitta_nl.SPA\Peshitta_nl.SPA.csproj", "{54CEB5EB-C4C0-4950-B56B-94B5D79DD6FB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,10 +29,6 @@ Global
 		{4F10B22A-D4D4-4466-B25D-AEB957C7E416}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F10B22A-D4D4-4466-B25D-AEB957C7E416}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F10B22A-D4D4-4466-B25D-AEB957C7E416}.Release|Any CPU.Build.0 = Release|Any CPU
-		{54CEB5EB-C4C0-4950-B56B-94B5D79DD6FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{54CEB5EB-C4C0-4950-B56B-94B5D79DD6FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{54CEB5EB-C4C0-4950-B56B-94B5D79DD6FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{54CEB5EB-C4C0-4950-B56B-94B5D79DD6FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
