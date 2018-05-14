@@ -49,7 +49,10 @@
         <p style="font-size: x-small" lang="nl">
             Bijgewerkt:
             <asp:Literal EnableViewState="false" ID="lblUpdate" runat="server" /><br />
-            De brontekst is vrij beschikbaar als 'Creative Commons'. Auteur behoudt het recht op tekstwijzigingen. Iedereen mag de tekst onaangepast drukken/verspreiden, mits een verwijzing naar de oorspronkelijke auteur (Peshitta_nl) wordt gemaakt.</p>
+           Copyright indicatie 'Creative Commons' CC-BY-NC-ND.
+    
+        U mag de Peshitta.nl tekst ongewijzigd, niet commerciëel, in willekeurige mediavorm distribueren met vermelding van de oorspronkelijke naam Peshitta.nl<br />
+        U mag de Peshitta.nl tekst <i>alleen</i> distribueren als u deze licentie ongewijzgd laat.</p>
       <p style="font-size: x-small" lang="en">Syriac Fonts provided by George Kiraz. Peshitta source, UBS 1905 text.</p>
         <a rel="external" href="http://twitter.com/peshitta_nl" style="  font-size: 9px"
             hreflang="nl" lang="nl">Volg peshitta.nl via Twitter.</a><br />
