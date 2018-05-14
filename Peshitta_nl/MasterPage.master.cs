@@ -227,7 +227,7 @@ namespace peshitta.nl
             // because of caching
             if (_menu != null)
             {
-                _menu.HostName = isLocalHost ? Request.Url.Host : "www.peshitta.nl";
+                _menu.HostName = isLocalHost ? Request.Url.Host + (Request.Url.IsDefaultPort ? "" : ":"+ Request.Url.Port.ToString()): "www.peshitta.nl";
                 if (Request.Url.AbsolutePath.StartsWith("peshitta.nl"))
                 {
                     _menu.HostName += "/peshitta.nl";

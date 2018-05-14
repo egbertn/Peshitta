@@ -1,18 +1,18 @@
+using Peshitta.Data.DB;
 using System;
 using System.Configuration;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Net.Mail;
+using System.Globalization;
+using System.IO;
 using System.Net;
 using System.Net.Configuration;
-using System.Web.Configuration;
-using System.Text.RegularExpressions;
+using System.Net.Mail;
 using System.Net.Sockets;
-using System.Globalization;
-using Peshitta.Data.DB;
-using System.Web.Hosting;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Configuration;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace peshitta.nl
 {
@@ -20,7 +20,8 @@ namespace peshitta.nl
     {
         public async static Task<KitabDB> InstanceDBAsync()
         {
-            var path = HostingEnvironment.MapPath("~/App_Data/Bijbel");
+            var path = WebConfigurationManager.AppSettings["app_data"];
+            //var path = HostingEnvironment.MapPath("~/App_Data/Bijbel");
 
             var kitab = await KitabDB.LoadFromDiskAsync(path);
             return kitab;
