@@ -1,0 +1,477 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{97B8E7D7-C8C1-4A28-BA37-A83228977B56}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>peshitta.nl</RootNamespace>
+    <AssemblyName>peshitta.nl</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.4\lib\net45\System.Web.Http.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.4\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Web.Optimization.WebForms">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.WebForms.1.1.3\lib\net45\Microsoft.AspNet.Web.Optimization.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="About.aspx" />
+    <Content Include="Aramese_Grondtekst.aspx" />
+    <Content Include="Aramese_Grondtekst_2.aspx" />
+    <Content Include="Archeologisch_Bewijs.aspx" />
+    <Content Include="Bijbel_Kopen.aspx" />
+    <Content Include="Book.aspx" />
+    <Content Include="ClientAccessPolicy.xml" />
+    <Content Include="Contact.aspx" />
+    <Content Include="Content\Site.css" />
+    <Content Include="copyright.htm" />
+    <Content Include="css\back.jpg" />
+    <Content Include="css\default.css" />
+    <Content Include="De_Griekse_En_Hebreeuwse_Mythe.aspx" />
+    <Content Include="doelstelling.aspx" />
+    <Content Include="Griekse_Grondtekst.aspx" />
+    <Content Include="Historisch_bewijs.aspx" />
+    <Content Include="images\1cor8vs6.GIF" />
+    <Content Include="images\1corinthians14v11.GIF" />
+    <Content Include="images\1corinthians16v22.GIF" />
+    <Content Include="images\1johannes5v7.GIF" />
+    <Content Include="images\1thessalonians1v8.GIF" />
+    <Content Include="images\20REV_Tarsus_200_silverstater68BCE.jpg" />
+    <Content Include="images\2corinthians11v33.GIF" />
+    <Content Include="images\2Corinthians1v22.PNG" />
+    <Content Include="images\2Corinthians6v15.PNG" />
+    <Content Include="images\2corintians12v4.GIF" />
+    <Content Include="images\2peter1v1.PNG" />
+    <Content Include="images\2timothy4v13.PNG" />
+    <Content Include="images\acts1v19.GIF" />
+    <Content Include="images\acts21v40.GIF" />
+    <Content Include="images\Acts2v1.GIF" />
+    <Content Include="images\Acts2v1pentacost.GIF" />
+    <Content Include="images\acts8v27.GIF" />
+    <Content Include="images\acts9v36.GIF" />
+    <Content Include="images\aleftav_genesis1vers1.GIF" />
+    <Content Include="images\Aramaic_Speaking_Regions.PNG" />
+    <Content Include="images\aramnaharaim.jpg" />
+    <Content Include="images\aramnaharaim1.jpg" />
+    <Content Include="images\aramnaharaim_small.png" />
+    <Content Include="images\assyriamap.jpg" />
+    <Content Include="images\assyriamap.png" />
+    <Content Include="images\assyrianalaphabet.gif" />
+    <Content Include="images\barkchb.jpg" />
+    <Content Include="images\bible.jpg" />
+    <Content Include="images\BibleTitle.GIF" />
+    <Content Include="images\DSS_voorbeeld.PNG" />
+    <Content Include="images\edesa28e.jpg" />
+    <Content Include="images\edesa28e.png" />
+    <Content Include="images\edesa29a.jpg" />
+    <Content Include="images\Ein_Gedi_Synagogue.png" />
+    <Content Include="images\Ein_Gedi_Synagogue2.png" />
+    <Content Include="images\Ein_Gedi_Synagogue_small.jpg" />
+    <Content Include="images\execution_stake.JPG" />
+    <Content Include="images\Exodus14v13.GIF" />
+    <Content Include="images\footer.PNG" />
+    <Content Include="images\Galatians1v5.PNG" />
+    <Content Include="images\Galatians1v5_Aramaic.PNG" />
+    <Content Include="images\galatians4v6.GIF" />
+    <Content Include="images\greekisrecension.GIF" />
+    <Content Include="images\hebraism.GIF" />
+    <Content Include="images\Hebres1v8.PNG" />
+    <Content Include="images\hebrews2v9.PNG" />
+    <Content Include="images\hebrews2v9_Ar.PNG" />
+    <Content Include="images\hebrews5v14.PNG" />
+    <Content Include="images\isrchrist.jpg" />
+    <Content Include="images\isrchrist.png" />
+    <Content Include="images\isrju.jpg" />
+    <Content Include="images\isrju.png" />
+    <Content Include="images\James3v18.PNG" />
+    <Content Include="images\job40v20.JPG" />
+    <Content Include="images\John11v16.PNG" />
+    <Content Include="images\John19v13.GIF" />
+    <Content Include="images\John19v17.GIF" />
+    <Content Include="images\John19v29.PNG" />
+    <Content Include="images\john1v3 mepharreshe.PNG" />
+    <Content Include="images\john1v3 peshitta.PNG" />
+    <Content Include="images\John1v38.GIF" />
+    <Content Include="images\john1v41.GIF" />
+    <Content Include="images\john1v42.GIF" />
+    <Content Include="images\John20v6.GIF" />
+    <Content Include="images\John3v3.PNG" />
+    <Content Include="images\John4v48.PNG" />
+    <Content Include="images\John5v2.GIF" />
+    <Content Include="images\John8v58.PNG" />
+    <Content Include="images\Kay.JPG" />
+    <Content Include="images\khtava.GIF" />
+    <Content Include="images\loanwords.GIF" />
+    <Content Include="images\LocationParthia.png" />
+    <Content Include="images\logo.jpg" />
+    <Content Include="images\Luke10v13.PNG" />
+    <Content Include="images\Luke13v21.GIF" />
+    <Content Include="images\Luke1v15.PNG" />
+    <Content Include="images\Luke22v1.GIF" />
+    <Content Include="images\Mark10v46.PNG" />
+    <Content Include="images\Mark14v36.JPG" />
+    <Content Include="images\Mark15v34.GIF" />
+    <Content Include="images\Mark3v17.GIF" />
+    <Content Include="images\mark5v41.GIF" />
+    <Content Include="images\mark7v11.GIF" />
+    <Content Include="images\Mark7v34.GIF" />
+    <Content Include="images\Mark7v34_Aramaic.GIF" />
+    <Content Include="images\mattew5v22_2.GIF" />
+    <Content Include="images\mattew6v24.GIF" />
+    <Content Include="images\Matthew13v25.GIF" />
+    <Content Include="images\Matthew13v40.GIF" />
+    <Content Include="images\matthew16v10.GIF" />
+    <Content Include="images\matthew16v9.GIF" />
+    <Content Include="images\Matthew19v28.PNG" />
+    <Content Include="images\matthew21v9.GIF" />
+    <Content Include="images\matthew23v13.PNG" />
+    <Content Include="images\Matthew23v23.GIF" />
+    <Content Include="images\Matthew23v5.PNG" />
+    <Content Include="images\Matthew27v46.GIF" />
+    <Content Include="images\Matthew27v49.PNG" />
+    <Content Include="images\Matthew2v11.PNG" />
+    <Content Include="images\Matthew5v18.PNG" />
+    <Content Include="images\matthew5v22.GIF" />
+    <Content Include="images\Messias2.GIF" />
+    <Content Include="images\messias3.GIF" />
+    <Content Include="images\multilanguage.GIF" />
+    <Content Include="images\MytheChristendom.JPG" />
+    <Content Include="images\MytheChristendom.PNG" />
+    <Content Include="images\MytheChristendom2.jpg" />
+    <Content Include="images\opb13_18.jpg" />
+    <Content Include="images\PalmyraToday.jpg" />
+    <Content Include="images\PayneSmith-P115.GIF" />
+    <Content Include="images\pericope_de_aldultera.GIF" />
+    <Content Include="images\Peshitta_Voorbeeld1.png" />
+    <Content Include="images\Peshitta_Voorbeeld1JC.png" />
+    <Content Include="images\Peshitta_Voorbeeld2.png" />
+    <Content Include="images\Peshitta_Voorbeeld2jc.png" />
+    <Content Include="images\Peshitta_Voorwoord.png" />
+    <Content Include="images\Peshitta_VoorwoordJC.png" />
+    <Content Include="images\petrusl.GIF" />
+    <Content Include="images\pillarsynagogekafarnaum.jpg" />
+    <Content Include="images\pillar_kafarnaum.png" />
+    <Content Include="images\play.png" />
+    <Content Include="images\play_big.png" />
+    <Content Include="images\porod1.png" />
+    <Content Include="images\porod2.png" />
+    <Content Include="images\ps98.PNG" />
+    <Content Include="images\psifas.jpg" />
+    <Content Include="images\Rev4v8.PNG" />
+    <Content Include="images\rev9v11.PNG" />
+    <Content Include="images\Revelation15v4.GIF" />
+    <Content Include="images\Revelation15v4Greek.GIF" />
+    <Content Include="images\revelation1v8.GIF" />
+    <Content Include="images\Revelation9v11.GIF" />
+    <Content Include="images\Rom5v7.PNG" />
+    <Content Include="images\romans14v11.GIF" />
+    <Content Include="images\romans14v11greek.GIF" />
+    <Content Include="images\romans9v29.GIF" />
+    <Content Include="images\Romans9v29CompHebrew.GIF" />
+    <Content Include="images\seatofmoses.png" />
+    <Content Include="images\sianfu1.png" />
+    <Content Include="images\sianfu4.jpg" />
+    <Content Include="images\sianfu5s.jpg" />
+    <Content Include="images\sianfu5s_1.png" />
+    <Content Include="images\sianfu5s_2.png" />
+    <Content Include="images\sku-113.gif" />
+    <Content Include="images\Spuridas.GIF" />
+    <Content Include="images\Spuridas.png" />
+    <Content Include="images\strongs3030.PNG" />
+    <Content Include="images\tarsusmunt.jpg" />
+    <Content Include="images\teldan.jpg" />
+    <Content Include="images\teldan.png" />
+    <Content Include="images\Tombstone.bmp" />
+    <Content Include="images\Tombstone.png" />
+    <Content Include="images\twitter.PNG" />
+    <Content Include="images\vaticanus.jpg" />
+    <Content Include="images\vaticanus_origin.JPG" />
+    <Content Include="images\zacharias12v10.gif" />
+    <Content Include="images\Zizania.gif" />
+    <Content Include="Links.aspx" />
+    <Content Include="lords_prayer.mp3" />
+    <Content Include="osb.js" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="images\syrcomurhoy.ttf" />
+    <Content Include="Book.master" />
+    <Content Include="MasterPage.master" />
+    <Content Include="popup.master" />
+    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.1.1.js" />
+    <Content Include="Scripts\jquery-3.1.1.min.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="WebForm1.aspx" />
+    <Content Include="css\freescpt.eot" />
+    <Content Include="css\freescpt.ttf" />
+    <Content Include="css\syrcomurhoy.eot" />
+    <Content Include="css\SyrCOMUrhoy.otf" />
+    <Content Include="css\syrcomurhoy.ttf" />
+    <None Include="Properties\PublishProfiles\lokaal.pubxml" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="robots.txt" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Default.aspx" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="talen.GIF" />
+    <Content Include="Tekstueel_bewijs.aspx" />
+    <Content Include="verse.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Bundle.config" />
+    <None Include="Project_Readme.html" />
+    <Content Include="sitemap.ashx" />
+    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.1.1.min.map" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Api\Config\WebApiConfig.cs" />
+    <Compile Include="Api\ContentServices.cs" />
+    <Compile Include="Properties\Resource.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+      <CustomToolNamespace>peshitta.nl</CustomToolNamespace>
+    </Compile>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="About.aspx.designer.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Book.aspx.cs">
+      <DependentUpon>Book.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Book.aspx.designer.cs">
+      <DependentUpon>Book.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Book.master.cs">
+      <DependentUpon>Book.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="book.master.designer.cs">
+      <DependentUpon>Book.master</DependentUpon>
+    </Compile>
+    <Compile Include="Contact.aspx.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact.aspx.designer.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ctBook.cs" />
+    <Compile Include="Controls\ctChapter.cs" />
+    <Compile Include="Controls\ctChaptersPerBook.cs" />
+    <Compile Include="Controls\BookIdx.cs" />
+    <Compile Include="Controls\ctVerse.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage.master.cs">
+      <DependentUpon>MasterPage.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPage.master.designer.cs">
+      <DependentUpon>MasterPage.master</DependentUpon>
+    </Compile>
+    <Compile Include="popup.master.cs">
+      <DependentUpon>popup.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\sitemap.ashx.cs" />
+    <Compile Include="Utils\SiteMap.cs" />
+    <Compile Include="Utils\utils.cs" />
+    <Compile Include="verse.aspx.cs">
+      <DependentUpon>verse.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Verse.aspx.designer.cs">
+      <DependentUpon>verse.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Api\VersingServices.cs" />
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.designer.cs</LastGenOutput>
+      <CustomToolNamespace>peshitta.nl</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Peshitta.Data\Peshitta.Data.csproj">
+      <Project>{4f10b22a-d4d4-4466-b25d-aeb957c7e416}</Project>
+      <Name>Peshitta.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>52787</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:52787/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

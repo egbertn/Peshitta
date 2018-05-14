@@ -1,0 +1,315 @@
+﻿/* STANDAARD UITVOERING VAN ALLE PAGINA'S 								*/
+
+/* EERSTE LAAG - volledige scherm - (HTML)								*/
+/*html { 
+	margin: 0px;
+	padding: 0px;
+	background: url('back.jpg') repeat-y;
+	}*/
+
+/* TWEEDE LAAG (BODY) 													*/
+body { 
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	left: 0px; top: 0px; 
+	max-width: 760px;
+	min-width:380px;
+	font-size:11pt;
+	font-family:Verdana, Arial, Helvetica, sans-serif; 
+	
+	}
+	.menuMain 
+	{
+		font-size:9pt;
+		
+	}
+.hide {display:none}
+.menu 			{min-width:90px; max-width:180px; padding:10px; float:left;border-right:1px thin grey;
+    		
+ 
+  }
+  div.index {white-space:normal;max-width:500px;min-width:250px}
+  
+.contents		{min-width:265px; max-width:530px; padding:10px; float:left; padding-left:20px; }
+.cpy {min-width:265px; max-width:530px; padding:10px;  padding-left:20px; }
+div.chrono			{min-width:380px; max-width:760px; padding:10px; clear:both; }
+
+div.bookChapter 	{ font-size:70%; float:left; padding:0px; margin:0px 5px 0px 5px; }
+div.texthead        {padding-top:5px;padding-bottom:10px; font-size:larger; color: #80552B;}
+div.menu ul 		{ border-bottom: 1px solid #000000; padding:0px; margin:0px; list-style:none; }
+
+h1			{ margin:15px; min-width:65px; max-width:130px; border-top:3px solid #000000; border-bottom:3px solid #000000; }
+h2			{ font-size:95%; margin:15px; padding:10px; float:right; border:1px solid #000000; border-right:none; }
+h3			{ margin:15px; clear:both; }
+h6.imglabel
+{
+    margin-top: 5px;
+    border: 1px solid #000000;
+    border-right: none;
+    border-left: none;
+    font-size: 70%;
+    color: #666633;
+    font-weight: bold;
+}
+
+ h5.imglabel
+{
+    margin-top: 5px;
+    border: 1px solid #000000;
+    border-right: none;
+    border-left: none;
+    font-size: 75%;
+    color: #666633;
+    font-weight: bold;
+}
+
+a.seo_1 
+{
+    clear:none; text-align:center
+}
+span.seo_2
+{
+    font-size: 80%; 
+}
+
+@font-face {  
+
+  font-family: 'Freestyle Script' ;  
+ src: url( freescpt.eot ); 
+  src: url(freescpt.ttf ) format("truetype");  
+}  
+
+@font-face {
+font-family: 'Serto Urhoy';
+src: url('syrcomurhoy.eot'),
+url('syrcomurhoy.eot?#iefix') format('embedded-opentype'),         
+url('syrcomurhoy.ttf') format('truetype'),         
+url('syrcomurhoy.svg#SertoUrhoyRegular') format('svg');    
+font-weight: normal;    font-style: normal;
+}
+.booktitle { font-family: Freestyle Script , verdana, helvetica, sans-serif;  font-size:48px; color:Black;
+             text-shadow: 0.1em 0.1em #ffffff }  
+
+.chrono table		{ max-width:740px; min-width:100px }
+.chrono th.subject	{ background:#FBE2A4; }
+.chrono th p		{ font-size:80%; text-align:center; }
+.chrono td			{ background:#FFFCF4; font-size:80% }
+.chrono td p		{ font-size:70%; text-align:left; }
+fieldset
+{
+    border-style: inset solid solid solid;
+    border-width: thin;
+    border-color: #666633;
+    background-color: #FFFF99;
+    padding: 5px;
+    float: left;
+    margin-right: 10px;
+}
+legend {font-size:70%}
+
+ p {font-size:90%}
+label {font-size:9pt}
+span.note
+{
+	border-bottom-style: dotted;
+	cursor: pointer;
+	border-bottom-color: #996633;
+	text-decoration: none;
+	border-bottom-width: 1px;
+
+}
+div.noteText		{ display:none; border:1px solid #000000; background:#FFFFDF; }
+
+li {padding-bottom:5px;font-size:90%}
+	a {font-size:90%}
+  
+td.syc 
+{padding-right:5px;
+font-family: Serto Urhoy, Estrangelo Nisibin; margin-left: 5px; margin-right:5px; font-size:140%; direction:rtl; vertical-align:top; text-align:right
+}
+td.num
+{font-size:90%;
+    clear:none; vertical-align:top; 
+}
+td.verse 
+{ padding-left:5px;border:0;
+    font-size:90%;
+ margin-left: 5px; margin-right:5px; vertical-align:top;text-align:left
+}
+td.seo_1
+{
+    margin:0; padding:0;width:0;border:0
+}
+  .note
+{
+	border-bottom-style: dotted;
+	cursor: pointer;
+	border-bottom-color: #996633;
+	text-decoration: none;
+	border-bottom-width: 1px;
+}
+a.amen:hover
+{
+    text-decoration: none;
+	color: #000000;
+    background-color: #999966;
+}
+.selectedbook
+{
+    background-color: #CC9900;
+}
+.chapterarea
+{
+    border: 1px dotted #808000;
+    background-color: #FBDE86;
+}
+a.amen:visited, a.amen:link
+{
+    text-decoration: none;
+	color: #80552B;	
+}
+  a:visited, a:link
+{
+	text-decoration: none;
+	color: #80552B;
+}
+a.selectedverse 
+{
+   background-color: #CC9900;
+}
+div.spacer {clear:both; width:1px;height:1px}
+div.bible			{min-width:250px; max-width: 500px; padding-left:10px;  white-space:normal; clear:both}
+div.search			{min-width:250px; max-width: 500px; padding-left:10px;  margin-bottom:10px;clear:both}
+table.book			{min-width:233px; max-width: 465px; padding-left:10px; border: 1px solid #888888;
+        			 
+-moz-box-shadow: -5px -5px 5px #888;
+ -webkit-box-shadow: -5px -5px 5px #888;
+ box-shadow: -5px -5px 5px #888;
+ }
+fieldset.book       {min-width:233px; max-width: 465px; padding-left:10px; border: 1px solid #888888;}
+table.book h3, h4		{text-align:center; font-size:105%}	
+table.book h5			{font-size:70%; float:left; padding:0px; margin:0px 5px 0px 5px; }
+table.book p			{padding: 0px; margin: 3px; font-size:90%; }
+table.book div.noteText	{display:none;min-width:240px; max-width:280px; padding:5px; background:#FFFFDF; opacity:0.88; border:1px solid #000000; font-size:80%;}
+
+span.link			{cursor:pointer;font-size:80%;color:#FF00FF;font-size:100%;}
+
+  .apo {font-size:smaller}
+  .kop
+  {font-weight:bold; clear:both;}
+ 
+  .jesus
+{
+	color: #666600;
+}
+  tr {vertical-align:top}
+
+.c2
+{
+    padding: 1px;    
+    margin: 1px;
+    border:1px solid gray;
+    font-size: 80%;
+    white-space:normal
+
+}
+
+
+.gadget, gadget2 {
+	margin:0 0 0 0; 
+	background:url(http://www.pumbo.nl/open-social/website/gadget/bg_gadget_website.png);
+	background-repeat:no-repeat;
+	background-position:top left;
+	width:380px;
+	height:380px;
+}
+.title {
+	float:left;
+	width:380px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size:18px;
+	color: #f99f1e;
+	margin-top:5px;
+	margin-left:5px;
+	margin-bottom:-2px
+}
+.author {
+	float:left;
+	width:380px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size:9px;
+	color: #666;
+	margin-top:0px;
+	margin-left:5px;
+	margin-bottom:5px;
+	clear:both;
+}
+.txt {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size:11px;
+	line-height:16pt;
+	color:#666;
+	overflow:hidden;
+	height:230px;
+	width:200px;
+	float:left;
+	margin-left:5px;
+}
+.cover {
+	border-style: solid;
+	border-top-width:1px;
+	border-bottom-width:2px;
+	border-right-width:2px;
+	border-left-width:1px;
+	border-color:#DDDDDD;
+	padding:2px;
+	float:left;
+	width:150px;
+	margin-left:5px;
+	margin-top:5px;
+	clear:both;
+}
+.buttons a, .buttons button {
+ 	clear:both;
+	display:block;
+	float:left;
+	margin-top:15px;
+	margin-left:195px;
+	margin-bottom:6px;
+	background-color:#f5f5f5;
+	border:1px solid #dedede;
+	border-top:1px solid #eee;
+	border-left:1px solid #eee;
+	font-size:12px;
+	line-height:130%;
+	text-decoration:none;
+	font-weight:bold;
+	color:#565656;
+	cursor:pointer;
+	padding:5px 10px 6px 7px;
+}
+.buttons button {
+	width:auto;
+	overflow:visible;
+	padding:4px 10px 3px 7px;
+}
+.buttons button img, .buttons a img {
+	margin:0 3px -3px 0 !important;
+	padding:0;
+	border:none;
+	height:16px;
+}
+button.btn_regular, .buttons a.btn_regular {
+	color:#336699;
+}
+.buttons a.btn_regular:hover, button.btn_regular:hover {
+	background-color:#dff4ff;
+	border:1px solid #c2e1ef;
+	color:#336699;
+}
+.buttons a.btn_regular:active {
+	background-color:#6299c5;
+	border:1px solid #6299c5;
+	color:#fff;
+}
+

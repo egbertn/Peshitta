@@ -1,0 +1,80 @@
+﻿<%@ master language="C#" autoeventwireup="true" inherits="peshitta.nl.BookMaster" CodeBehind="~/Book.master.cs" enableviewstate="false" %><!DOCTYPE html>
+<html lang="nl">
+<head id="Header" runat="server">
+<meta charset="utf-8" />
+<title />
+    <link  rel="Stylesheet" type="text/css" href="css/default.css"/>
+    <link rel="Copyright" type="text/html" href="copyright.htm" />        
+    <link rel="shortcut icon" href="favicon.ico" />
+    <meta name="rating" content="general" /><meta name="robots" content="index, follow" /><meta runat="server" id="keywords" name="Keywords" content="" />
+</head>
+<body onload="body_onload();">
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/nl_NL/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+    <form runat="server" method="post" id="Form1">
+    <asp:HiddenField runat="server" ID="DefaultPubs" Value="AB,PS" />    
+    <asp:HiddenField runat="server" ID="IndexPub" Value="AB" />
+  <%--  <div style="cursor: pointer; text-align:center; vertical-align:middle;  height:75px"
+        title="Peshitta.nl" onclick="location.href='http://www.peshitta.nl';">        
+        <span class="booktitle">Peshitta.nl</span>
+         
+    </div>--%>
+    
+    <div class="menu" style="float:left">
+        <!-- 110% to correct relative a size-->
+        
+        <ul class="menuMain" style="font-size: 110%">
+            <asp:PlaceHolder runat="server" ID="pnlMenu">
+               
+            </asp:PlaceHolder>            
+            <li style="padding: 0"><a class="amen" style="display: none" href="http://www.2001translation.nl/Bijbel_Kopen.aspx">
+                Zoekt u een goede Bijbel?</a> <a class="amen" href="https://www.boekenbestellen.nl/boek/peshittanl-aramees-nederlands/9789463452601" title="U kunt deze Bijbel (Nieuwe Testament) gedrukt exemplaar aanschaffen">
+                    Peshitta aanschaffen?</a> </li>
+            <%--<li style="padding: 0"><asp:HyperLink CssClass="amen" runat="server" ID="links" /></li>--%>
+            <li><a class="amen" href="Contact.aspx?nom=1">Contact</a> </li>
+        </ul>         
+    </div>
+    <ctrl:BookIdx ChaptersAreaCss="chapterarea" CssClass="index" HyperLinkCss="amen" 
+            SelectedCssClass="selectedbook" 
+            Height="200px"  
+            Style="min-width:250px;max-width:375px; margin-left: 10px" ItemWidth="125px" 
+            runat="server" ID="_menu" Orientation="Horizontal" />
+    
+    <div class="spacer" style="clear: both;"></div>
+    
+     <asp:ContentPlaceHolder ID="NewBibleContent" runat="server">
+    </asp:ContentPlaceHolder>
+    <asp:ContentPlaceHolder ID="NewAltContent" runat="server">
+    </asp:ContentPlaceHolder>
+    <!-- height-->
+    
+    <div class="cpy" >
+        <p style="font-size: x-small" lang="nl">
+            Bijgewerkt:
+            <asp:Literal EnableViewState="false" ID="lblUpdate" runat="server" /><br />      
+    &copy geldig vanaf 21 oktober 2013<br />
+    Copyright indicatie 'Creative Commons' CC-BY-NC-ND.
+    
+        U mag de Peshitta.nl tekst ongewijzigd, niet commerciëel, in willekeurige mediavorm distribueren met vermelding van de oorspronkelijke naam Peshitta.nl<br />
+        U mag de Peshitta.nl tekst <i>alleen</i> distribueren als u deze licentie ongewijzgd laat.<br />
+    
+      
+    <p>Syriac Fonts provided by George Kiraz. Peshitta source, UBS 1905 text. </p>
+
+            
+        <a rel="external" href="http://twitter.com/peshitta_nl" style="  font-size: 9px"
+            hreflang="nl" lang="nl">Volg peshitta.nl via Twitter.</a><br />        
+<br />
+     <div class="fb-like" data-href="http://www.peshitta.nl" data-width="32" data-height="32" data-colorscheme="light" data-layout="standard" data-action="like" data-show-faces="false" data-send="false"></div>
+    </div>
+
+    </form>
+</body>
+</html>

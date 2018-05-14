@@ -1,0 +1,63 @@
+﻿<%@ master language="C#" autoeventwireup="true" inherits="peshitta.nl.MasterPage" enableviewstate="false" CodeBehind="MasterPage.master.cs" %><!DOCTYPE html>
+
+<html lang="nl">
+<head id="Header" runat="server">
+<meta charset="utf-8" />
+<title />
+    <link  rel="Stylesheet" type="text/css" href="css/default.css"/>
+    <link rel="Copyright" type="text/html" href="copyright.htm" />       
+    <link rel="shortcut icon" href="favicon.ico" />
+    <meta name="rating" content="general" /><meta name="robots" content="index, follow" /><meta runat="server" id="keywords" name="Keywords" content="" />
+</head>
+<body onload="body_onload();">
+    <form runat="server" method="post" id="Form1">
+      <asp:HiddenField runat="server" ID="DefaultPubs" Value="AB,PS" />    
+      <asp:HiddenField runat="server" ID="IndexPub" Value="AB" />
+  <%--  <div style="cursor: pointer; text-align:center; vertical-align:middle;  height:75px"
+        title="Peshitta.nl" onclick="location.href='http://www.peshitta.nl';">        
+        <span class="booktitle">Peshitta.nl</span>
+         
+    </div>--%>
+ 
+    <div class="menu">
+        <img src="images/bible.jpg" alt="Bible" style="width:169px;height:121px; margin-left:0; padding:0; border:0" />
+        <ul class="menuMain" style="font-size: 110%">
+            <asp:PlaceHolder runat="server" ID="pnlMenu"  >
+                <li style="padding: 0"><a class="amen" href="Default.aspx">Home</a> </li>                
+                                                
+            </asp:PlaceHolder>
+            <li style="padding: 0"><asp:HyperLink CssClass="amen" runat="server" ID="links" /></li>
+            <li><a class="amen" href="Contact.aspx?nom=1">Contact</a> </li>
+        </ul>       
+        <ctrl:BookIdx CssClass="index" HyperLinkCss="amen" SelectedCssClass="selectedbook" Style="margin-left: 10px"  ItemWidth="125px" runat="server" ID="_menu" Orientation="Vertical" />
+    </div>
+
+    <div class="contents" runat="server" id="contents">
+        
+        
+        
+        <asp:ContentPlaceHolder ID="BibleContent" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    
+    
+    <asp:ContentPlaceHolder ID="AltContent" runat="server">
+    </asp:ContentPlaceHolder>
+    <!-- height-->
+ 
+    <div style="clear:left ">
+        <p style="font-size: x-small" lang="nl">
+            Bijgewerkt:
+            <asp:Literal EnableViewState="false" ID="lblUpdate" runat="server" /><br />
+            Copyright &copy; 2008 - 2012. Niets (op citaatrecht na) uit deze vertaling mag zonder toestemming
+            van de uitgever voor commerciële of reproductiedoeleinden worden gebruikt.</p>
+      <p style="font-size: x-small" lang="en">Syriac Fonts provided by George Kiraz. Peshitta source, UBS 1905 text.</p>
+        <a rel="external" href="http://twitter.com/peshitta_nl" style="  font-size: 9px"
+            hreflang="nl" lang="nl">Volg peshitta.nl via Twitter.</a><br />
+        <a rel="external" href="http://www.adccure.nl/hosting.aspx" style="  font-size: 9px"
+            hreflang="nl" lang="nl">Windows hosting verzorgd door ADC Cure.</a>
+
+    </div>
+    </form>
+</body>
+</html>

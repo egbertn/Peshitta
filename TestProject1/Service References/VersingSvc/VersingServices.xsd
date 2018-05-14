@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://adccure.nl" elementFormDefault="qualified" targetNamespace="http://adccure.nl" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GetBookEditionsFromPub">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="pubid" type="xs:string" />
+        <xs:element minOccurs="1" maxOccurs="1" name="langid" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBookEditionsFromPubResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="GetBookEditionsFromPubResult" type="tns:ArrayOfInt" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfInt">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="int" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetBookInfos">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="bookeditionIds" type="tns:ArrayOfInt" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBookInfosResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="GetBookInfosResult" type="tns:ArrayOfBookedition" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfBookedition">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="bookedition" nillable="true" type="tns:bookedition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="bookedition">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="bookEditionid" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="bookid" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="publishercode" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="year" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="isbn" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="langid" type="xs:short" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Copyright" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="title" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="EnglishTitle" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Author" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="keywords" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="description" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="robots" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PressDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="forwordId" nillable="true" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Version" nillable="true" type="xs:float" />
+      <xs:element minOccurs="0" maxOccurs="1" name="subject" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="bookOrder" type="xs:short" />
+      <xs:element minOccurs="1" maxOccurs="1" name="active" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Texts" type="tns:ArrayOfText" />
+      <xs:element minOccurs="0" maxOccurs="1" name="chapterRequestedStats" type="tns:ArrayOfChapterRequestedStat" />
+      <xs:element minOccurs="0" maxOccurs="1" name="book" type="tns:book" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Language" type="tns:Language" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfText">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Text" nillable="true" type="tns:Text" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Text">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="textid" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="BookChapterAlineaid" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Alineaid" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="bookeditionid" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Content" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Remarks" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Header" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Synonyms" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="textwords" type="tns:ArrayOfTextword" />
+      <xs:element minOccurs="0" maxOccurs="1" name="textwordsHistories" type="tns:ArrayOfTextwordsHistory" />
+      <xs:element minOccurs="0" maxOccurs="1" name="bookchapteralinea" type="tns:bookchapteralinea" />
+      <xs:element minOccurs="0" maxOccurs="1" name="bookedition" type="tns:bookedition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfTextword">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="textword" nillable="true" type="tns:textword" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="textword">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="textid" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="wordid" type="xs:short" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsCapitalized" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddSpace" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsAllCaps" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsFootNote" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddDot" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddComma" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsHeader" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LParentThesis" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RParentThesis" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LBracket" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RBracket" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Semicolon" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PreSpace" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddColon" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddHyphenMin" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RDQuote" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LDQuote" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RSQuote" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LSQuote" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddLT" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddGT" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddSlash" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddBang" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="QMark" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddSlashAfter" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddEqual" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PrefixAmp" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Text" type="tns:Text" />
+      <xs:element minOccurs="0" maxOccurs="1" name="word" type="tns:word" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="word">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="word1" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LangId" type="xs:short" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsNumber" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="number" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="textwords" type="tns:ArrayOfTextword" />
+      <xs:element minOccurs="0" maxOccurs="1" name="textwordsHistories" type="tns:ArrayOfTextwordsHistory" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Synonyms" type="tns:ArrayOfSynonym" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Synonyms1" type="tns:ArrayOfSynonym" />
+      <xs:element minOccurs="0" maxOccurs="1" name="WordTopics" type="tns:ArrayOfWordTopic" />
+      <xs:element minOccurs="0" maxOccurs="1" name="tWordTags" type="tns:ArrayOfWordTag" />
+      <xs:element minOccurs="0" maxOccurs="1" name="WordTags" type="tns:ArrayOfWordTag" />
+      <xs:element minOccurs="0" maxOccurs="1" name="TranslateToWords" type="tns:ArrayOfTranslateToWord" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfTextwordsHistory">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="textwordsHistory" nillable="true" type="tns:textwordsHistory" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="textwordsHistory">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="id" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="textid" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="wordid" type="xs:short" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsCapitalized" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddSpace" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsAllCaps" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsFootNote" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddDot" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddComma" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ArchiveDate" type="xs:dateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsHeader" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LParentThesis" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RParentThesis" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LBracket" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RBracket" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Semicolon" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PreSpace" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddColon" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddHyphenMin" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RDQuote" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LDQuote" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RSQuote" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LSQuote" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddLT" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddGT" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddSlash" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddBang" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="QMark" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddSlashAfter" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="AddEqual" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PrefixAmp" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Text" type="tns:Text" />
+      <xs:element minOccurs="0" maxOccurs="1" name="word" type="tns:word" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfSynonym">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Synonym" nillable="true" type="tns:Synonym" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Synonym">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="id" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="wordid" type="xs:short" />
+      <xs:element minOccurs="1" maxOccurs="1" name="synonym_wordid" type="xs:short" />
+      <xs:element minOccurs="0" maxOccurs="1" name="word" type="tns:word" />
+      <xs:element minOccurs="0" maxOccurs="1" name="word1" type="tns:word" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfWordTopic">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WordTopic" nillable="true" type="tns:WordTopic" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="WordTopic">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="id" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="wordid" type="xs:short" />
+      <xs:element minOccurs="1" maxOccurs="1" name="topicid" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Topic" type="tns:Topic" />
+      <xs:element minOccurs="0" maxOccurs="1" name="word" type="tns:word" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Topic">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="id" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="langid" type="xs:short" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Topic1" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="WordTopics" type="tns:ArrayOfWordTopic" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfWordTag">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WordTag" nillable="true" type="tns:WordTag" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="WordTag">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="id" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="wordid" type="xs:short" />
+      <xs:element minOccurs="0" maxOccurs="1" name="publicationcode" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="tag_wordid" type="xs:short" />
+      <xs:element minOccurs="1" maxOccurs="1" name="enabled" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PublicationCode1" type="tns:PublicationCode" />
+      <xs:element minOccurs="0" maxOccurs="1" name="word" type="tns:word" />
+      <xs:element minOccurs="0" maxOccurs="1" name="word1" type="tns:word" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PublicationCode">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="publicationCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="searchable" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="WordTags" type="tns:ArrayOfWordTag" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfTranslateToWord">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TranslateToWord" nillable="true" type="tns:TranslateToWord" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TranslateToWord">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="id" type="xs:short" />
+      <xs:element minOccurs="0" maxOccurs="1" name="word" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="wordid" nillable="true" type="xs:short" />
+      <xs:element minOccurs="0" maxOccurs="1" name="specialCharacters" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CapitalizeTargetWord" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="word1" type="tns:word" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="bookchapteralinea">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="bookchapteralineaid" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="bookchapterid" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Alineaid" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="comments" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Texts" type="tns:ArrayOfText" />
+      <xs:element minOccurs="0" maxOccurs="1" name="bookchapter" type="tns:bookchapter" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="bookchapter">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="bookchapterid" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="bookid" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="chapter" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="comments" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="bookchapteralineas" type="tns:ArrayOfBookchapteralinea" />
+      <xs:element minOccurs="0" maxOccurs="1" name="chapterRequestedStats" type="tns:ArrayOfChapterRequestedStat" />
+      <xs:element minOccurs="0" maxOccurs="1" name="book" type="tns:book" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfBookchapteralinea">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="bookchapteralinea" nillable="true" type="tns:bookchapteralinea" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfChapterRequestedStat">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="chapterRequestedStat" nillable="true" type="tns:chapterRequestedStat" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="chapterRequestedStat">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="chapter" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="bookEditionid" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ip" type="xs:base64Binary" />
+      <xs:element minOccurs="0" maxOccurs="1" name="bookchapter" type="tns:bookchapter" />
+      <xs:element minOccurs="0" maxOccurs="1" name="bookedition" type="tns:bookedition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="book">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="bookid" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Title" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="abbreviation" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="bookchapters" type="tns:ArrayOfBookchapter" />
+      <xs:element minOccurs="0" maxOccurs="1" name="bookeditions" type="tns:ArrayOfBookedition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfBookchapter">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="bookchapter" nillable="true" type="tns:bookchapter" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Language">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Langid" type="xs:short" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Language1" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CultureCode" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="bookeditions" type="tns:ArrayOfBookedition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetVersToolTip">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="textid" type="xs:int" />
+        <xs:element minOccurs="1" maxOccurs="1" name="langid" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetVersToolTipResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="GetVersToolTipResult" type="tns:VerseInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="VerseInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Book" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Verse" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Chapter" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="TextId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetEnglishTitleFromBookEdition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="bookeditionId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetEnglishTitleFromBookEditionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="GetEnglishTitleFromBookEditionResult" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

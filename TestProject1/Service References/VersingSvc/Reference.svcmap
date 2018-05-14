@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d3d070ef-7374-4bf0-80d7-079bf3f74f7d" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:3135/2001translation/VersingServices.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="VersingServices.wsdl" MetadataType="Wsdl" ID="3891422e-3eb4-47c3-831f-58d7fa528177" SourceId="1" SourceUrl="http://localhost:3135/2001translation/VersingServices.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="VersingServices.disco" MetadataType="Disco" ID="742d89ad-22bd-481f-b19e-bd24c3e05580" SourceId="1" SourceUrl="http://localhost:3135/2001translation/VersingServices.svc?disco" />
+    <MetadataFile FileName="VersingServices.xsd" MetadataType="Schema" ID="12c3cc57-b670-43ea-9666-5fb4eda2ba1b" SourceId="1" SourceUrl="http://localhost:3135/2001translation/VersingServices.svc?xsd=xsd0" />
+    <MetadataFile FileName="VersingServices1.wsdl" MetadataType="Wsdl" ID="585235d9-f23d-4600-83e7-2c8ba8c49c5d" SourceId="1" SourceUrl="http://localhost:3135/2001translation/VersingServices.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

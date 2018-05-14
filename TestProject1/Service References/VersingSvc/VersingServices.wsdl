@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://adccure.nl" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://adccure.nl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://adccure.nl/Imports">
+      <xsd:import schemaLocation="http://localhost:3135/2001translation/VersingServices.svc?xsd=xsd0" namespace="http://adccure.nl" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IVersingServices_GetBookEditionsFromPub_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBookEditionsFromPub" />
+  </wsdl:message>
+  <wsdl:message name="IVersingServices_GetBookEditionsFromPub_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBookEditionsFromPubResponse" />
+  </wsdl:message>
+  <wsdl:message name="IVersingServices_GetBookInfos_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBookInfos" />
+  </wsdl:message>
+  <wsdl:message name="IVersingServices_GetBookInfos_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBookInfosResponse" />
+  </wsdl:message>
+  <wsdl:message name="IVersingServices_GetVersToolTip_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetVersToolTip" />
+  </wsdl:message>
+  <wsdl:message name="IVersingServices_GetVersToolTip_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetVersToolTipResponse" />
+  </wsdl:message>
+  <wsdl:message name="IVersingServices_GetEnglishTitleFromBookEdition_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetEnglishTitleFromBookEdition" />
+  </wsdl:message>
+  <wsdl:message name="IVersingServices_GetEnglishTitleFromBookEdition_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetEnglishTitleFromBookEditionResponse" />
+  </wsdl:message>
+  <wsdl:portType msc:usingSession="false" name="IVersingServices">
+    <wsdl:operation name="GetBookEditionsFromPub">
+      <wsdl:input wsaw:Action="http://adccure.nl/GetBookEditions" message="tns:IVersingServices_GetBookEditionsFromPub_InputMessage" />
+      <wsdl:output wsaw:Action="http://adccure.nl/GetBookEditionsResponse" message="tns:IVersingServices_GetBookEditionsFromPub_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBookInfos">
+      <wsdl:input wsaw:Action="http://adccure.nl/GetBookInfos" message="tns:IVersingServices_GetBookInfos_InputMessage" />
+      <wsdl:output wsaw:Action="http://adccure.nl/GetBookInfosResponse" message="tns:IVersingServices_GetBookInfos_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVersToolTip">
+      <wsdl:input wsaw:Action="http://adccure.nl/GetVersToolTip" message="tns:IVersingServices_GetVersToolTip_InputMessage" />
+      <wsdl:output wsaw:Action="http://adccure.nl/VerseToolTipResponse" message="tns:IVersingServices_GetVersToolTip_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEnglishTitleFromBookEdition">
+      <wsdl:input wsaw:Action="http://adccure.nl/GetVerseIndictation" message="tns:IVersingServices_GetEnglishTitleFromBookEdition_InputMessage" />
+      <wsdl:output wsaw:Action="http://adccure.nl/GetVerseIndictationResponse" message="tns:IVersingServices_GetEnglishTitleFromBookEdition_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Bijbel" Class="Entities" Modifier="Sealed" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=adccure.nl;Initial Catalog=BIJBEL;Persist Security Info=True;User ID=bijbel;Pooling=True;Min Pool Size=1;Max Pool Size=10;Load Balance Timeout=60" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="BIJBELConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.book" Member="books">
+    <Type Name="book">
+      <Column Name="bookid" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="abbreviation" Type="System.String" DbType="NVarChar(8) NOT NULL" CanBeNull="false" />
+      <Association Name="book_bookchapter" Member="bookchapters" ThisKey="bookid" OtherKey="bookid" Type="bookchapter" />
+      <Association Name="book_bookedition" Member="bookeditions" ThisKey="bookid" OtherKey="bookid" Type="bookedition" />
+    </Type>
+  </Table>
+  <Table Name="dbo.bookchapter" Member="bookchapters">
+    <Type Name="bookchapter">
+      <Column Name="bookchapterid" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="bookid" Type="System.Int32" DbType="Int" CanBeNull="false" />
+      <Column Name="chapter" Type="System.Int32" DbType="Int" CanBeNull="false" />
+      <Column Name="comments" Type="System.String" DbType="nvarchar(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="bookchapter_bookchapteralinea" Member="bookchapteralineas" ThisKey="bookchapterid" OtherKey="bookchapterid" Type="bookchapteralinea" />
+      <Association Name="book_bookchapter" Member="book" ThisKey="bookid" OtherKey="bookid" Type="book" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.bookchapteralinea" Member="bookchapteralineas">
+    <Type Name="bookchapteralinea" Modifier="Sealed">
+      <Column Name="bookchapteralineaid" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="bookchapterid" Type="System.Int32" DbType="Int" CanBeNull="false" />
+      <Column Name="Alineaid" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="comments" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="bookchapteralinea_Text" Member="Texts" ThisKey="bookchapteralineaid,Alineaid" OtherKey="BookChapterAlineaid,Alineaid" Type="Text" />
+      <Association Name="bookchapter_bookchapteralinea" Member="bookchapter" ThisKey="bookchapterid" OtherKey="bookchapterid" Type="bookchapter" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.bookedition" Member="bookeditions">
+    <Type Name="bookedition">
+      <Column Name="bookEditionid" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="bookid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="publishercode" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
+      <Column Name="year" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="isbn" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="langid" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Copyright" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="EnglishTitle" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Author" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="keywords" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="robots" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
+      <Column Name="PressDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="forwordId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Version" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="subject" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="bookOrder" Type="System.Int16" DbType="smallint NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="active" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="bookedition_Text" Member="Texts" ThisKey="bookEditionid" OtherKey="bookeditionid" Type="Text" />
+      <Association Name="book_bookedition" Member="book" ThisKey="bookid" OtherKey="bookid" Type="book" IsForeignKey="true" />
+      <Association Name="Language_bookedition" Member="Language" ThisKey="langid" OtherKey="Langid" Type="Language" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Languages" Member="Languages">
+    <Type Name="Language">
+      <Column Name="Langid" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Language" Member="Language1" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CultureCode" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
+      <Column Name="FontName" Type="System.String" DbType="NVarchar(20)" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Language_bookedition" Member="bookeditions" ThisKey="Langid" OtherKey="langid" Type="bookedition" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Text" Member="Texts">
+    <Type Name="Text" Modifier="Sealed">
+      <Column Name="textid" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" UpdateCheck="WhenChanged" />
+      <Column Name="BookChapterAlineaid" Type="System.Int32" DbType="Int" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Alineaid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="bookeditionid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="timestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="Text_textword" Member="textwords" ThisKey="textid" OtherKey="textid" Type="textword" />
+      <Association Name="Text_textwordsHistory" Member="textwordsHistories" ThisKey="textid" OtherKey="textid" Type="textwordsHistory" />
+      <Association Name="bookchapteralinea_Text" Member="bookchapteralinea" ThisKey="BookChapterAlineaid,Alineaid" OtherKey="bookchapteralineaid,Alineaid" Type="bookchapteralinea" IsForeignKey="true" />
+      <Association Name="bookedition_Text" Member="bookedition" ThisKey="bookeditionid" OtherKey="bookEditionid" Type="bookedition" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.textwords" Member="textwords">
+    <Type Name="textword" Modifier="Sealed">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsReadOnly="true" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="textid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="wordid" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="IsCapitalized" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddSpace" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="IsAllCaps" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="IsFootNote" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddDot" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddComma" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="IsHeader" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LParentThesis" Storage="_PrefixLParentThesis" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="RParentThesis" Storage="_SuffixRParentThesis" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LBracket" Storage="_PrefixLBracket" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="RBracket" Storage="_SuffixRBracket" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LAngle" Member="Semicolon" Storage="_PrefixLAngle" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Rangle" Member="PreSpace" Storage="_SuffixRangle" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddColon" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddHyphenMin" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="RDQuote" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LDQuote" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="RSQuote" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LSQuote" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddLT" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddGT " Member="AddGT" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddSlash" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddBang" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="QMark" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddSlashAfter" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddEqual" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddAmp" Member="PrefixAmp" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="Text_textword" Member="Text" ThisKey="textid" OtherKey="textid" Type="Text" IsForeignKey="true" />
+      <Association Name="word_textword" Member="word" ThisKey="wordid" OtherKey="id" Type="word" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.words" Member="words">
+    <Type Name="word" Modifier="Sealed">
+      <Column Name="id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsReadOnly="true" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="word" Member="wordX" Storage="_word1" AccessModifier="Private" Type="System.Data.Linq.Binary" DbType="VarBinary(100) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="IsSymbol" Type="System.Boolean" DbType="bit NOT NULL" IsReadOnly="true" CanBeNull="false" />
+      <Column Name="IsHtml" Type="System.Boolean" DbType="bit NOT NULL" IsReadOnly="true" CanBeNull="false" />
+      <Column Name="LangId" Type="System.Int16" DbType="smallint NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="IsNumber" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="number" Type="System.Int32" DbType="int NULL" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="word_textword" Member="textwords" ThisKey="id" OtherKey="wordid" Type="textword" />
+      <Association Name="word_textwordsHistory" Member="textwordsHistories" ThisKey="id" OtherKey="wordid" Type="textwordsHistory" />
+      <Association Name="word_Synonym" Member="Synonyms" ThisKey="id" OtherKey="wordid" Type="Synonym" />
+      <Association Name="word_Synonym1" Member="Synonyms1" ThisKey="id" OtherKey="synonym_wordid" Type="Synonym" />
+      <Association Name="word_TranslateToWord" Member="TranslateToWords" ThisKey="id" OtherKey="wordid" Type="TranslateToWord" />
+    </Type>
+  </Table>
+  <Table Name="dbo.textwordsHistory" Member="textwordsHistories">
+    <Type Name="textwordsHistory">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="textid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="wordid" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="IsCapitalized" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddSpace" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="IsAllCaps" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="IsFootNote" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddDot" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddComma" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="ArchiveDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="IsHeader" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LParentThesis" Storage="_PrefixLParentThesis" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="RParentThesis" Storage="_SuffixRParentThesis" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LBracket" Storage="_PrefixLBracket" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="RBracket" Storage="_SuffixRBracket" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LAngle" Member="Semicolon" Storage="_PrefixLAngle" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Rangle" Member="PreSpace" Storage="_SuffixRangle" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddColon" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddHyphenMin" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="RDQuote" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LDQuote" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="RSQuote" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LSQuote" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddLT" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddGT " Member="AddGT" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddSlash" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddBang" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="QMark" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddSlashAfter" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddEqual" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="AddAmp" Member="PrefixAmp" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="Text_textwordsHistory" Member="Text" ThisKey="textid" OtherKey="textid" Type="Text" IsForeignKey="true" />
+      <Association Name="word_textwordsHistory" Member="word" ThisKey="wordid" OtherKey="id" Type="word" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Synonym" Member="Synonyms">
+    <Type Name="Synonym">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="wordid" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="synonym_wordid" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="word_Synonym" Member="word" ThisKey="wordid" OtherKey="id" Type="word" IsForeignKey="true" />
+      <Association Name="word_Synonym1" Member="word1" ThisKey="synonym_wordid" OtherKey="id" Type="word" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tPublicationCodes" Member="PublicationCodes">
+    <Type Name="PublicationCode">
+      <Column Name="publicationCode" Type="System.String" DbType="NVarChar(8) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="searchable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TranslateToWords" Member="TranslateToWords">
+    <Type Name="TranslateToWord">
+      <Column Name="id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="word" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="wordid" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="specialCharacters" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" UpdateCheck="WhenChanged" />
+      <Column Name="CapitalizeTargetWord" Type="System.Boolean" DbType="bit NOT NULL" CanBeNull="false" UpdateCheck="WhenChanged" />
+      <Association Name="word_TranslateToWord" Member="word1" ThisKey="wordid" OtherKey="id" Type="word" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.FindWord" Method="FindWord">
+    <Parameter Name="word" Type="System.Data.Linq.Binary" DbType="VarBinary(100)" />
+    <Parameter Name="number" Type="System.Int32" DbType="Int" />
+    <Parameter Name="wordid" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="langid" Type="System.Int16" DbType="SmallInt" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>

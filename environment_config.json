@@ -1,0 +1,10 @@
+﻿{
+  "auth0_domain": "dynasource-development.eu.auth0.com",
+  "auth0_clientID": "JEn9CsnMdVJ81ANysZLomSvyqNyxNCnN",
+  "auth0_redirectUri": "http://localhost:4200/",
+  "auth0_responseType": "token id_token",
+  "ODATA_URL": "http://localhost:63358/odata/",
+  "API_URL": "http://localhost:63358/api/",
+  "SEARCH_URL": "https://ds-jasper-api-search-development.azurewebsites.net/",
+  "SignalR_URL": "https://ds-jasper-api-signalr-development.azurewebsites.net/signalr"
+}

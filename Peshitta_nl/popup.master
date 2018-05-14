@@ -1,0 +1,26 @@
+﻿<%@ master language="C#" autoeventwireup="true" inherits="peshitta.nl.popup" CodeBehind="~/popup.master.cs" enableviewstate="false" %>
+<!DOCTYPE html>
+<html>
+<head id="Head1" runat="server">
+<link rel="Stylesheet" type="text/css" href="css/default.css"  />
+<link rel="copyright" title="colofon" type="text/html" href="copyright.htm"/>
+<meta http-equiv="X-UA-Compatible" content="IE=8,FF=3" />
+<meta name="robots" content="noindex, nofollow"/>
+<title>Peshitta.nl Bijbelteksten</title>
+</head>
+<body>
+<form id="form1" runat="server">
+    <%--<div style=" cursor: pointer; width: 760px; height: 150px; background: url('PrintWord.ashx?i=logo.jpg&amp;x=250&amp;y=25&amp;f=Freestyle Script&amp;t=1&amp;s=80')"
+        title="Peshitta.nl" onclick="javascript:location.href='http://peshitta.nl'">
+    </div>--%>
+    <div style="white-space: nowrap;">
+    <div class="contents" style="margin-left:200px" runat="server" id="contents">
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server"/>
+    </div>
+     <div style="margin-left: 220px">
+        <p style="font-size: x-small" lang="nl">Bijgewerkt: <asp:Literal EnableViewState="false" ID="lblUpdate" runat="server" /></p>
+        <a target="newpage" href="http://www.adccure.nl/hosting.aspx" style="font-size: 9px"
+            hreflang="nl" lang="nl">Windows hosting verzorgd door ADC Cure.</a>
+    </div>
+    </div>
+    </form></body></html>
