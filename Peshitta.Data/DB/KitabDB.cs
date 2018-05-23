@@ -1267,6 +1267,10 @@ namespace Peshitta.Data.DB
                     textss = this.Contents.Pubs[pub].Texts.Values.Where(w => textIdsOpt.Contains(w.TextId)).ToArray();
                 }
                 var textIds = textss.Select(s => s.TextId).ToArray();
+                if (textIds.Length == 0)
+                {
+                    break;
+                }
                 maxV = textss.Max(m => m.timestamp);
 
                 var loadThem = LoadFile<IEnumerable<TextWords>>(Path.Combine(pub, "textwords"), textIds).ToArray();
