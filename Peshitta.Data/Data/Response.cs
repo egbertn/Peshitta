@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 
 namespace Peshitta.Data.Data
 {
@@ -16,9 +15,9 @@ namespace Peshitta.Data.Data
             this.eTAG = eTAG;
             this.LastDateTime = lastDateTime;
             this.Data = data;
-            StatusCode = HttpStatusCode.OK;
+            StatusCode = 200;
         }
-        public HttpStatusCode StatusCode { get; set; }
+        public int StatusCode { get; set; }
         public int TotalCount { get;}
         public string eTAG { get; }
 

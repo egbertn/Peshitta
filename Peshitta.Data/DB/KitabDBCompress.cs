@@ -36,7 +36,7 @@ namespace Peshitta.Data.DB
 
                 foreach (var tw in texts)
                 {
-
+                    if (!wordsCache.ContainsKey(tw.wordid)) continue;
                     var wrd = wordsCache[tw.wordid];
 
                     bool qmarkDone = false;

@@ -12,7 +12,6 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -464,13 +463,14 @@ namespace Peshitta.Data.DB
         }
         public async Task<Response<bool>> CompressVerse(TextExpanded text)
         {
-            HttpStatusCode code = HttpStatusCode.NoContent;
+            var code = 204;
 
              if (!this.Contents.BookEditions.ContainsKey(text.bookeditionid))
             {
-                code = HttpStatusCode.NotFound;
+                code = 404;
                 return new Response<bool>(1, "", DateTime.UtcNow, new[] { false }) { StatusCode = code };
-            } var pubCode = this.Contents.BookEditions[text.bookeditionid].publishercode;
+            }
+            var pubCode = this.Contents.BookEditions[text.bookeditionid].publishercode;
 
             this.ActivePublications = new[] { pubCode };
           
@@ -934,8 +934,8 @@ namespace Peshitta.Data.DB
                             false, false,
                             false, false, false, false, false, false, addRSQuote, false, addRDQuote, false, false, false, false, false, false, false, false, false))
                         {
-                            didAdd = true;
-
+                          
+                           
                         }
                         addRDQuote = addRSQuote = false;
                         foundSplits++;
@@ -943,7 +943,10 @@ namespace Peshitta.Data.DB
                     startAt = foundSplits;
                 }
             }
-
+            if (didAdd)
+            {
+                WriteAllTextAsync(Contents.Words.Values, "words.json.zz").Wait();
+            }
             return retVal;
         }
         private static void IsCapitalized(string word, out bool pIsCapitalized, out bool pIsAllCaps)
@@ -1016,10 +1019,7 @@ namespace Peshitta.Data.DB
                 w = w.ToLower();
             }
             // numbers can become huge, and thus, waste space!
-            bool isNumber = int.TryParse(w, out int number);
-
-            //todo: fix
-            short? langid = 19;
+            bool isNumber = int.TryParse(w, out int number);         
             var values = Contents.Words.Values;
             words foundWord = isNumber ? values.SingleOrDefault(f => f.number == number) : values.SingleOrDefault(f => f.word == w);
 
@@ -1028,8 +1028,8 @@ namespace Peshitta.Data.DB
                 foundWord = new words()
                 {
                     IsNumber = isNumber,
-                    //TODO: make language 
-                    LangId = 19
+                
+                    LangId = t.langid
                 };
                 if (isNumber)
                 {
@@ -1039,7 +1039,14 @@ namespace Peshitta.Data.DB
                 {
                     foundWord.word = w;
                 }
-                //
+                //gen primary key
+                var maxVal = values.Max(i => i.id);
+                foundWord.id = maxVal + 1;
+                var dict = new Dictionary<int, words>((IDictionary<int, words>)Contents.Words)
+                {
+                    { foundWord.id, foundWord }
+                };
+                Contents.Words = dict;
                 didAdd = true;
             }
             var wordid = foundWord.id;
