@@ -1,27 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Peshitta.Data.SqlLite.Model
 {
 	public class Text
 	{
-		public Text()
-		{
-			textwords = new HashSet<TextWords>();
-			textwordsHistory = new HashSet<textwordsHistory>();
-		}
-		public int textid { get; set; }
+        public Text()
+        {
+            TextWords = new HashSet<TextWords>();
+            TextWordsHistories = new HashSet<TextWordsHistory>();
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is Text txt)
+            {
+                return txt.textid == this.textid;
+            }
+            return false;
+        }
+        public override int GetHashCode()
+        {
+            return this.textid ;
+        }
+        public int textid { get; set; }
 		public int BookChapterAlineaid { get; set; }
 		public int Alineaid { get; set; }
 		public int bookeditionid { get; set; }
 		public DateTimeOffset timestamp { get; set; }
 
-		public virtual bookchapteralinea bookchapteralinea { get; set; }
-		public virtual bookedition bookedition { get; set; }
-		public virtual ICollection<TextWords> textwords { get; set; }
-		public virtual ICollection<textwordsHistory> textwordsHistory { get; set; }
+		public BookChapterAlinea bookchapteralinea { get; set; }
+		public bookedition bookedition { get; set; }
+	    public ICollection<TextWordsHistory> TextWordsHistories { get; set; }
+        public ICollection<TextWords> TextWords { get; set; }
+		
 	}
 }

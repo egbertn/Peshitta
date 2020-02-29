@@ -14,7 +14,7 @@ namespace Peshitta.Data.SqlLite.Model
 		public string Title { get; set; }
 
 		public string abbrevation { get; set; }
-		public virtual ICollection<BookChapter> bookchapter { get; set; }
-		public virtual ICollection<bookedition> bookedition { get; set; }
+		public ICollection<BookChapter> bookchapter { get; set; }
+		public ICollection<bookedition> bookedition { get; set; }
 	}
 }

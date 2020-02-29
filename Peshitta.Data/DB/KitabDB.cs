@@ -1250,7 +1250,7 @@ namespace Peshitta.Data.DB
         public Task<Response<AlineaText>> LoadChapterAsync(int chapter, int bookEditionId, params int[] textIdsOpt)
         {
             var maxV = DateTime.MinValue;
-            var lst = new List<TextExpanded>(0);
+            var lst = new List<TextExpanded>();
             foreach (var pub in _activePublications)
             {
                 //convert

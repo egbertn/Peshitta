@@ -30,7 +30,7 @@ namespace Peshitta.Data.SqlLite.Model
 		public short bookOrder { get; set; }
 		public bool active { get; set; }
 
-		public virtual Book book { get; set; }
-		public virtual ICollection<Text> Text { get; set; }
+		public Book book { get; set; }
+		public  ICollection<Text> Text { get; set; }
 	}
 }
