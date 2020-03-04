@@ -37,6 +37,7 @@ namespace Peshitta.Infrastructure.Sqlite
 		public DbSet<bookedition> BookEdition { get; set; }
 		public DbSet<words> Words { get; set; }
         private static ILookup<int, words> wordsCache;
+        private static IDictionary<Models.WordLanguageKey, int> idCache;
         private static readonly object locker = new object();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -228,9 +229,10 @@ namespace Peshitta.Infrastructure.Sqlite
             lock (locker)
             {
                 wordsCache = GetWordsCache();
-               
+                //idCache = this.Words.Where(w => !w.IsNumber && !string.IsNullOrEmpty(w.word)).ToDictionary(w => new Models.WordLanguageKey( w.word, w.LangId), i => i.id.Value);
             }
         }
+       
         public async Task<IEnumerable<Text>> GetVerseHistory(int textid)
         {
             if (wordsCache == null)
@@ -238,22 +240,13 @@ namespace Peshitta.Infrastructure.Sqlite
                 UpdateWordsCache();
             }
             var query = await this.Text.Where(w => w.textid == textid).
-               Select(s => new
-               {
-                   s.textid,
-                   s.BookChapterAlineaid,
-                   s.Alineaid,
-                   s.timestamp,
-                   s.bookeditionid,
-                   TextWordsHistory = s.TextWordsHistories
-               }).FirstOrDefaultAsync();
+                Include(i => i.TextWordsHistories).FirstOrDefaultAsync();
 
-            var cntHistories = query.TextWordsHistory.
-                GroupBy(g => new { g.textid, g.ArchiveDate }).Select(m => m.Key).ToArray();
-            var historyText = new List<Text>(cntHistories.Length);
-            for (var i = 0; i< cntHistories.Length; i++)
-            {
-               
+            var cntHistories = query.TextWordsHistories.
+                GroupBy(g =>  g.ArchiveDate ).Select(m => m.Key);
+            var historyText = new List<Text>();
+            foreach(var dt in cntHistories)
+            {               
                 if (query == null)
                 {
                     return null;
@@ -263,10 +256,10 @@ namespace Peshitta.Infrastructure.Sqlite
                     textid = query.textid,
                     BookChapterAlineaid = query.BookChapterAlineaid,
                     Alineaid = query.Alineaid,
-                    timestamp = query.timestamp,
+                    timestamp = dt,
                     bookeditionid = query.bookeditionid
                 };
-                Decompress(retVal, query.TextWordsHistory.Where(w => w.ArchiveDate == cntHistories[i].ArchiveDate).Select(s => s.ToTw()));
+                Decompress(retVal, query.TextWordsHistories.Where(w => w.ArchiveDate == dt).Select(s => s.ToTw()));
                 historyText.Add(retVal);
             }
            
@@ -522,7 +515,10 @@ namespace Peshitta.Infrastructure.Sqlite
             //string[] verseWords = content.Split(new[] { ' ' }, StringSplitOptions.None);
             //this.dcd.Transaction = dcd.Connection.BeginTransaction();
             var trans = await this.Database.BeginTransactionAsync();
-            var t = await this.Text.Where(w => w.textid == textId).Select(s => new {s, s.bookedition, s.TextWords, s.timestamp, s.TextWordsHistories }).FirstOrDefaultAsync();
+            var t = await this.Text.                
+                Include(i => i.TextWords).
+                Include(i => i.bookedition).
+                Include(i => i.bookchapteralinea).Where(w => w.textid == textId).FirstOrDefaultAsync();
           
             bool didAdd = false;
             if (t == null) return didAdd;
@@ -540,9 +536,9 @@ namespace Peshitta.Infrastructure.Sqlite
             {
                 
                 t.TextWordsHistories.Add(twh);
-                this.Add(twh);
+                
             }
-            
+            this.AddRange(t.TextWordsHistories);
 
             // this includes footer, header and body
             this.RemoveRange(t.TextWords);
@@ -886,7 +882,7 @@ namespace Peshitta.Infrastructure.Sqlite
                                 }
                             }
                         }
-                        if ((maxid = await CompressRange(t.s, theWord, addSpace, addDot, addComma, x == 1, x == 2,
+                        if ((maxid = await CompressRange(t, theWord, addSpace, addDot, addComma, x == 1, x == 2,
                             addColon, addSemiColon, addHyphen, addLBracket, addRBracket, addRParenthesis,
                             addLParenthesis, addLSQuote, addRSQuote, addLDQuote, addRDQuote, addLT, addGT, addSlash, addBang,
                             preSpace, addQMark, addSlashAfter, addEqual, addAmp, t.bookedition.langid, maxid)) > 0)
@@ -956,7 +952,7 @@ namespace Peshitta.Infrastructure.Sqlite
                         }
 
                         if (foundChar > '\0' && 
-                            (maxid = await CompressRange(t.s, 
+                            (maxid = await CompressRange(t, 
                             new string(foundChar, 1), addSpace, addDot, addComma, x == 1, x == 2,
                             false, false,
                             false, false, false, false, false, false, 
@@ -972,8 +968,8 @@ namespace Peshitta.Infrastructure.Sqlite
                     startAt = foundSplits;
                 }
             }
-            t.s.timestamp = newTimeStamp;
-           this.Update(t.s);
+            t.timestamp = newTimeStamp;
+           this.Update(t);
             await this.SaveChangesAsync();
         //  await this.Database.ExecuteSqlRawAsync("UPDATE text SET timestamp={1} WHERE textid={0}", textId, new DateTimeOffset(newTimeStamp).ToUnixTimeSeconds());
             await trans.CommitAsync();
@@ -997,15 +993,18 @@ namespace Peshitta.Infrastructure.Sqlite
             }
             // numbers can become huge, and thus, waste space!
             bool isNumber = int.TryParse(w, out int number);
-            //if (Cache == null)
-            //{
-            //    lock (locker)
-            //    {
-            //        Cache = this.Words.ToLookup(t => t.word, x => x);
-            //    }
-            //}
+            if (idCache == null)
+            {
+                UpdateWordsCache();
+            }
+            var key = new Models.WordLanguageKey(w, langId);
+            if (idCache.ContainsKey(key))
+            {
+                return new words { id = idCache[key], word = w };
+            }
+
             var foundWord = isNumber ? await this.Words.SingleOrDefaultAsync(a => a.number == number && a.LangId == langId) :
-                await this.Words.FromSqlRaw("SELECT * FROM words WHERE word == {0} AND LangId == {1}", w, langId).FirstOrDefaultAsync();
+                await this.Words.FromSqlRaw("SELECT * FROM words WHERE word = {0} AND LangId = {1} LIMIT 1", w, langId).FirstOrDefaultAsync();
             return foundWord;
         }
         /// <summary>

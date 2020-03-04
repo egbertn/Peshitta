@@ -80,6 +80,8 @@ namespace BibleAPI
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+            //app.UseDefaultFiles("/index.html");
+            app.UseStaticFiles();
             app.UseRouting(); 
 
             app.UseEndpoints(endpoints =>
@@ -89,6 +91,10 @@ namespace BibleAPI
                     if (env.IsDevelopment())
                     {
                         await context.Response.WriteAsync("Peshitta.Api works");
+                    }
+                    else
+                    {
+                        context.Response.Redirect("/peshitta/index.html");
                     }
                 });
                 endpoints.MapControllers();

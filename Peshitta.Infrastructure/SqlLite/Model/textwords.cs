@@ -1,7 +1,7 @@
 ﻿namespace Peshitta.Infrastructure.Sqlite.Model
 {
     [System.Diagnostics.DebuggerDisplay("{words}, id={id} textid={textid}, wordid={wordid}")]
-    public class TextWords
+    public class TextWords //cannot be a base class EntityFramework does not allow it
 	{
 		private bool IsBitSet(byte pos)
 		{

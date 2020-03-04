@@ -29,7 +29,8 @@ namespace Peshitta.Infrastructure.Sqlite.Model
 		public DateTimeOffset timestamp { get; set; }
         public BookChapterAlinea bookchapteralinea { get; set; }
 		public bookedition bookedition { get; set; }
-	    public ICollection<TextWordsHistory> TextWordsHistories { get; set; }
+
+        public ICollection<TextWordsHistory> TextWordsHistories { get; set; }
         public ICollection<TextWords> TextWords { get; set; }
 
         //TODO subclass instead of ignore

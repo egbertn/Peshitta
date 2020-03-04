@@ -1,8 +1,34 @@
 ﻿using System;
-
+using System.Text;
 
 namespace Peshitta.Infrastructure.Models
 {
+    public class WordLanguageKey
+    {
+        public WordLanguageKey(string word, int langid)
+        {
+            Word = word;
+            this.langid = langid;
+        }
+        public string Word { get; }
+        public int langid { get; }
+        public override bool Equals(object obj)
+        {
+            return this.GetHashCode() == obj.GetHashCode();
+        }
+        public override int GetHashCode()
+        {
+            var bytesCount = Encoding.UTF8.GetByteCount(Word);
+            var bytes = new byte[bytesCount+4];
+
+            Array.Copy(Encoding.UTF8.GetBytes(Word), 0, bytes, 0, bytesCount);
+            Array.Copy(BitConverter.GetBytes(langid), 0, bytes, bytesCount, 4);
+            var dest = new byte[4];
+            Utils.HashData.Hash(bytes, ref dest);
+            return BitConverter.ToInt32(dest, 0);
+        }
+    }
+
     public class BookChapterAlineaKey
     {
 

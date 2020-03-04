@@ -35,8 +35,8 @@ namespace TestProject1
             try
             {
 
-                // dbSqlContext.Database.EnsureDeleted();
-                // dbSqlContext.Database.EnsureCreated();
+                dbSqlContext.Database.EnsureDeleted();
+                dbSqlContext.Database.EnsureCreated();
             }
             catch (InvalidOperationException inv)
             {
@@ -48,7 +48,7 @@ namespace TestProject1
                 cfg.CreateMap<Peshitta.Infrastructure.Models.Book, Peshitta.Infrastructure.Sqlite.Model.Book>()
                 .ForMember(m => m.abbrevation, opt => opt.MapFrom(m => m.abbreviation == null ? m.Title.Substring(0, 2) : m.abbreviation));
                 cfg.CreateMap<Peshitta.Infrastructure.Models.BookEdition, Peshitta.Infrastructure.Sqlite.Model.bookedition>().
-                ForMember(m => m.keywords, opt => opt.MapFrom(map => string.Join(",", map.keywords)));
+                ForMember(m => m.keywords, opt => opt.MapFrom(map => map.keywords != null ? string.Join(",", map.keywords): null));
                 cfg.CreateMap<Peshitta.Infrastructure.Models.Text, Peshitta.Infrastructure.Sqlite.Model.Text>();
                 cfg.CreateMap<Peshitta.Infrastructure.Models.words, Peshitta.Infrastructure.Sqlite.Model.words>();
                 cfg.CreateMap<Peshitta.Infrastructure.Models.BookChapter, Peshitta.Infrastructure.Sqlite.Model.BookChapter>();
@@ -66,6 +66,15 @@ namespace TestProject1
             kitabDb = KitabDB.LoadFromDiskAsync(baseF, false).Result;
             Debug.WriteLine("Loading KitabDB including the cache took {0} ms", Environment.TickCount - start);
 
+        }
+        [TestMethod]
+        public void Muke()
+        {
+            var key = new Peshitta.Infrastructure.Models.WordLanguageKey("Piet", 19);
+            var hash = key.GetHashCode();
+            var key2 = new Peshitta.Infrastructure.Models.WordLanguageKey("Piet", 90);
+            var hash2 = key2.GetHashCode();
+            Assert.AreNotEqual(hash, hash2);
         }
         //[TestMethod]
         //public async Task ConVertColumn()
@@ -94,7 +103,7 @@ namespace TestProject1
 
             foreach (var b in kitabDb.Contents.Books)
             {
-                dbSqlContext.Books.Add(mapper.Map<Peshitta.Infrastructure.Sqlite.Model.Book>(b.Value));
+                dbSqlContext.Add(mapper.Map<Peshitta.Infrastructure.Sqlite.Model.Book>(b.Value));
               //  await dbSqlContext.SaveChangesAsync();
             }
 
@@ -103,12 +112,13 @@ namespace TestProject1
             {
                 var beC = mapper.Map<Peshitta.Infrastructure.Sqlite.Model.bookedition>(be);
                 //beC.bookEditionid = be.Key;
-                dbSqlContext.BookEdition.Add(beC);
+                dbSqlContext.Add(beC);
             }
            
             dbSqlContext.Publications.AddRange(new Peshitta.Infrastructure.Sqlite.Model.Publication { Code = "AB", Name = "Peshitta" },
                 new Peshitta.Infrastructure.Sqlite.Model.Publication { Code = "PS", Name = "Syriac Peshitta" });
-            foreach (var w in kitabDb.Contents.Words)
+            var idsExclude = new[] { 6353, 4985, 4771, 8531 , 3533, 8471, -18867, 7353 };
+            foreach (var w in kitabDb.Contents.Words.Where(w => !idsExclude.Contains(w.Key)))
             {
                 var mapped = mapper.Map<Peshitta.Infrastructure.Sqlite.Model.words>(w.Value);
                 mapped.LangId = w.Value.LangId;
@@ -117,7 +127,7 @@ namespace TestProject1
                 {
                     mapped.LangId = 90;
                 }
-                dbSqlContext.Words.Add(mapped);            
+                dbSqlContext.Add(mapped);            
                 //var p = await dbSqlContext.Words.FirstOrDefaultAsync();
             }
             await dbSqlContext.SaveChangesAsync();
@@ -126,7 +136,7 @@ namespace TestProject1
                 var mapped = mapper.Map<Peshitta.Infrastructure.Sqlite.Model.BookChapter>(w.Value);
               
                 // if (!(await dbSqlContext.Words.ContainsAsync(mapped)))
-                dbSqlContext.BookChapter.Add(mapped);
+                dbSqlContext.Add(mapped);
                 //var p = await dbSqlContext.Words.FirstOrDefaultAsync();
             }
             await dbSqlContext.SaveChangesAsync();
@@ -139,7 +149,7 @@ namespace TestProject1
                 mapped.Alineaid = w.Key.Alineaid;
                 // if (!(await dbSqlContext.Words.ContainsAsync(mapped)))
 
-                dbSqlContext.BookchapterAlinea.Add(mapped);
+                dbSqlContext.Add(mapped);
                 //   await dbSqlContext.SaveChangesAsync();
                 //var p = await dbSqlContext.Words.FirstOrDefaultAsync();
             }
@@ -178,9 +188,10 @@ namespace TestProject1
                            
                             var plain = t.Content;
                             var remarks = t.Remarks;
-                            await dbSqlContext.CompressVerse(t.TextId, t.timestamp, plain, remarks, null);
                             dbSqlContext.Text.Add(text);
                             await dbSqlContext.SaveChangesAsync();
+                            await dbSqlContext.CompressVerse(t.TextId, t.timestamp, plain, remarks, null);
+                          
                         }
                     }
                 }

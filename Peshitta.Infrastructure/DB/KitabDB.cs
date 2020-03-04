@@ -1291,6 +1291,18 @@ namespace Peshitta.Infrastructure.DB
 
                     lst.Add(unexpand);
                 }
+//TODO: load history!
+                //var loadThem2 = LoadFile<IEnumerable<TextWordsHistory>>(Path.Combine(pub, "textwordshistory"), textIds).ToArray();
+                //lst.Capacity += loadThem.Length;
+              
+                //var grouped2 = loadThem2.GroupBy(g => new HistoryKey(g.textid, g.ArchiveDate));
+                //foreach (var t in textss)
+
+                //{
+                //    var unexpand = Decompress(t, grouped.Where(w => w.Key == t.TextId).First(), this.Contents.Words, sb);
+
+                //    lst.Add(unexpand);
+                //}
 
 
             };

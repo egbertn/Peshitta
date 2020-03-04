@@ -120,6 +120,12 @@ namespace peshitta.nl
                 return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
             }
         }
+        [HttpPost("AddHistory")]
+        public async Task<IActionResult> AddHistory([FromBody] VerseTemp vTemp)
+        {
+            //todo
+            return NoContent();
+        }
 
         //[HttpPost("GetSiteMap")]
         //public async Task<IActionResult> GetSiteMap(GetSiteMapRequest req)
@@ -134,7 +140,7 @@ namespace peshitta.nl
         //        var chaps = await dcd.ChaptersByBookIdAsync(bookId.bookid);
         //        foreach (var ch in chaps)
         //        {
-                    
+
         //            var contents = await dcd.LoadChaptersAsync( ch.Key.chapter, bookId.bookid);
 
         //            //dcd.getVersesByBookEditionEtag(new[] { p.bookEditionid }, ch.chapter, 0, out DateTime maxTs);
@@ -144,7 +150,7 @@ namespace peshitta.nl
         //                LastModifiedDateTime = resp.Max(m => m.timestamp),
         //                Loc = string.Format(req.FormatUrl, bookId.bookid, ch.Key.chapter)
         //            });
-                    
+
         //        }
         //    }
         //    using (var io = (MemoryStream)retVal.ToStream())
@@ -168,6 +174,6 @@ namespace peshitta.nl
         //        return dec.GetTags(original);
         //    }
         //}
- 
+
     }
 }

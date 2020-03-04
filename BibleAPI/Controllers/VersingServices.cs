@@ -70,8 +70,9 @@ namespace peshitta.nl.Api
         {
             try
             {
-                var data = await _db.Text.Where(w => w.textid == textid)
-                    .Select(s => new { s.Alineaid, s.bookedition, s.bookchapteralinea.bookchapter.chapter }).FirstOrDefaultAsync();
+                var data = await _db.Text.AsNoTracking().Where(w => w.textid == textid)
+                    .Include(i => i.bookedition).Include(i => i.bookchapteralinea.bookchapter)
+                    .FirstOrDefaultAsync();
                 if (data != null)
                 {
 
@@ -81,7 +82,7 @@ namespace peshitta.nl.Api
                     var retVal = new
                     {
                         Book = data.bookedition.title,
-                        Chapter = data.chapter,
+                        Chapter = data.bookchapteralinea.bookchapter.chapter,
                         TextId = textid,
                         Verse = data.Alineaid,
                         BookEnglish = data.bookedition.EnglishTitle
@@ -104,7 +105,7 @@ namespace peshitta.nl.Api
         {
             try
             {
-                var res = await _db.BookEdition.
+                var res = await _db.BookEdition.AsNoTracking().
                     Where(w => w.bookEditionid == bookeditionId).
                     Select(s => s.EnglishTitle).FirstOrDefaultAsync();
 
