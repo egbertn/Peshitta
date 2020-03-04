@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peshitta.nl", "Peshitta_nl\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peshitta.Data", "Peshitta.Data\Peshitta.Data.csproj", "{4F10B22A-D4D4-4466-B25D-AEB957C7E416}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peshitta.Infrastructure", "Peshitta.Infrastructure\Peshitta.Infrastructure.csproj", "{234822A7-F262-453A-ADB0-795DDD5C01A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibleAPI", "BibleAPI\BibleAPI.csproj", "{6C6EE58D-BC9F-487B-8D2B-68059177DB2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,14 @@ Global
 		{4F10B22A-D4D4-4466-B25D-AEB957C7E416}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F10B22A-D4D4-4466-B25D-AEB957C7E416}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F10B22A-D4D4-4466-B25D-AEB957C7E416}.Release|Any CPU.Build.0 = Release|Any CPU
+		{234822A7-F262-453A-ADB0-795DDD5C01A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{234822A7-F262-453A-ADB0-795DDD5C01A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{234822A7-F262-453A-ADB0-795DDD5C01A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{234822A7-F262-453A-ADB0-795DDD5C01A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C6EE58D-BC9F-487B-8D2B-68059177DB2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C6EE58D-BC9F-487B-8D2B-68059177DB2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C6EE58D-BC9F-487B-8D2B-68059177DB2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C6EE58D-BC9F-487B-8D2B-68059177DB2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
