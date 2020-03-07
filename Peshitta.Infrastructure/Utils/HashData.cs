@@ -4,6 +4,16 @@ namespace Peshitta.Infrastructure.Utils
 {
     public static class HashData
     {
+        //private static int CountChar(string st, char c)
+        //{
+        //    var r = st.Length;
+        //    var cnt = 0;
+        //    while (r-- != 0)
+        //    {
+        //        if (st[r] == c) cnt++;
+        //    }
+        //    return cnt;
+        //}
         private static readonly byte[] HashDataLookup =  {
                   0x01, 0x0E, 0x6E, 0x19, 0x61, 0xAE, 0x84, 0x77, 0x8A, 0xAA, 0x7D, 0x76, 0x1B,
                   0xE9, 0x8C, 0x33, 0x57, 0xC5, 0xB1, 0x6B, 0xEA, 0xA9, 0x38, 0x44, 0x1E, 0x07,
@@ -26,10 +36,9 @@ namespace Peshitta.Infrastructure.Utils
                   0x25, 0x45, 0x27, 0x75, 0x92, 0xB8, 0xA3, 0xC8, 0xDE, 0xEB, 0xF8, 0xF3, 0xDB,
                   0x0A, 0x98, 0x83, 0x7B, 0xE5, 0xCB, 0x4C, 0x78, 0xD1 };
 
-        /// <summary>
-        /// emulates Shlwapi HashData
-        /// </summary>
-        public static uint Hash(byte[] lpSrc, ref byte[] lpDest)
+       
+
+        public static unsafe uint Hash(byte* lpSrc, int nSrcLen, byte* lpDest, int nDestLen)
         {
             if (lpDest == null)
             {
@@ -39,10 +48,9 @@ namespace Peshitta.Infrastructure.Utils
             {
                 throw new ArgumentNullException(nameof(lpSrc));
             }
-            int nSrcLen = lpSrc.Length;
-            int nDestLen = lpDest.Length;
+            
             int srcCount = nSrcLen - 1, destCount = nDestLen - 1;
-           
+
             while (destCount >= 0)
             {
                 lpDest[destCount] = (byte)(destCount & 0xff);
@@ -61,6 +69,5 @@ namespace Peshitta.Infrastructure.Utils
             }
             return 0;
         }
-
     }
 }

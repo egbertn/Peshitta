@@ -1074,13 +1074,13 @@ namespace Peshitta.Data.DB
                 AddSlash = paddSlash,
                 AddBang = paddBang,
                 LBracket = paddLBracket,
-                // Semicolon = bAddSemiColon,
+                //Semicolon = bAddSemiColon,
                 RBracket = ppaddRBracket,
                 // PreSpace = addPreSpace,
                 QMark = pAddQMark,
                 AddSlashAfter = pAddSlashAfter,
                 AddEqual = pAddEqual,
-                //  PrefixAmp = pAddAmp
+                 AddAmp= pAddAmp
 
 
             };

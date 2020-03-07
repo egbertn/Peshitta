@@ -3,7 +3,7 @@
     [System.Diagnostics.DebuggerDisplay("{words}, id={id} textid={textid}, wordid={wordid}")]
     public class TextWordsHistory
     {
-        public TextWordsHistory() : base() // do not remove
+        public TextWordsHistory() 
         {
         }
 

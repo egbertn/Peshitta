@@ -16,16 +16,20 @@ namespace Peshitta.Infrastructure.Models
         {
             return this.GetHashCode() == obj.GetHashCode();
         }
-        public override int GetHashCode()
+        public unsafe override int GetHashCode()
         {
             var bytesCount = Encoding.UTF8.GetByteCount(Word);
             var bytes = new byte[bytesCount+4];
 
             Array.Copy(Encoding.UTF8.GetBytes(Word), 0, bytes, 0, bytesCount);
             Array.Copy(BitConverter.GetBytes(langid), 0, bytes, bytesCount, 4);
-            var dest = new byte[4];
-            Utils.HashData.Hash(bytes, ref dest);
-            return BitConverter.ToInt32(dest, 0);
+            int hashCode;
+            fixed (byte* src = bytes)
+            {
+                Utils.HashData.Hash(src, bytes.Length, (byte*)&hashCode, 4);
+            }
+            
+            return hashCode;
         }
     }
 
@@ -53,10 +57,8 @@ namespace Peshitta.Infrastructure.Models
                 byte shiftit = 32;
                 ulong p = (((ulong)bookchapteralineaid << shiftit)) | (ulong)Alineaid;
                 int outp;
-                var bits = BitConverter.GetBytes(p);
-                var dest = new byte[4];
-                Utils.HashData.Hash(bits, ref dest);
-                outp = BitConverter.ToInt32(dest, 0);
+                Utils.HashData.Hash((byte*)&p,8, (byte*)&outp, 4);
+               
                 return outp;
                 //p.GetHashCode() does not deliver unique values
             }

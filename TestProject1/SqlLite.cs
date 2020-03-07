@@ -10,6 +10,7 @@ using Peshitta.Infrastructure.DB;
 using System.Diagnostics;
 using AutoMapper;
 using System.Linq;
+using Peshitta.Infrastructure;
 
 namespace TestProject1
 {
@@ -18,9 +19,10 @@ namespace TestProject1
     {
 
         KitabDB kitabDb;
-        DbSqlContext dbSqlContext;
+        BijbelRepository _repo;
         string baseF = @"c:\temp\bijbel";
         IMapper mapper;
+        DbSqlContext dbSqlContext;
         [TestInitialize]
         public void Init()
         {
@@ -30,8 +32,8 @@ namespace TestProject1
             var _options = new DbContextOptionsBuilder<DbSqlContext>()
                 .UseSqlite(connectionString)
                 .Options;
-
             dbSqlContext = new DbSqlContext(_options);
+            _repo = new BijbelRepository(dbSqlContext);
             try
             {
 
@@ -89,13 +91,13 @@ namespace TestProject1
         //    dbSqlContext.UpdateRange(data);
         //    await dbSqlContext.SaveChangesAsync();
         //}
-        [TestMethod]
-        public async Task TestSelect()
-        {
-            var data = await dbSqlContext.Text.Where(w => w.textid == 2)
-                 .Select(s => new { s.Alineaid, s.bookedition, s.bookchapteralinea.bookchapter.chapter }).FirstOrDefaultAsync();
-                Assert.IsNotNull(data);
-        }
+        //[TestMethod]
+        //public async Task TestSelect()
+        //{
+        //    var data = await dbSqlContext.Text.Where(w => w.textid == 2)
+        //         .Select(s => new { s.Alineaid, s.bookedition, s.bookchapteralinea.bookchapter.chapter }).FirstOrDefaultAsync();
+        //        Assert.IsNotNull(data);
+        //}
         [TestMethod]
 		public async Task TestCreate()
 		{
@@ -190,8 +192,16 @@ namespace TestProject1
                             var remarks = t.Remarks;
                             dbSqlContext.Text.Add(text);
                             await dbSqlContext.SaveChangesAsync();
-                            await dbSqlContext.CompressVerse(t.TextId, t.timestamp, plain, remarks, null);
-                          
+                            foreach (var history in t.Histories)
+                            {
+                                 if (history.ArchiveDate == DateTime.MinValue)
+                                {
+                                    continue;
+                                }
+                                //await _repo.CompressVerse(t.TextId, history.ArchiveDate, history.expanded.Content, history.expanded.Remarks, null);
+                            }
+                            await _repo.CompressVerse(t.TextId, t.timestamp, t.Content, t.Remarks, null);
+
                         }
                     }
                 }

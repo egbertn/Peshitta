@@ -34,13 +34,12 @@ namespace Peshitta.Infrastructure.Models
             
             // return d.GetHashCode();
           
-            var hash = new byte[4];
-            var result = Utils.HashData.Hash(byts, ref hash);
-            if (result != 0)
+            int hash;
+            fixed (byte* ptr2 = byts)
             {
-                return 0;
-            }    //bt.GetHashCode does not work correctly
-            return BitConverter.ToInt32(hash, 0);
+                var result = Utils.HashData.Hash(ptr2, 12, (byte*)&hash, 4);
+                return hash;
+            }
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Peshitta.Infrastructure.Models
 {
@@ -26,6 +27,7 @@ namespace Peshitta.Infrastructure.Models
 
         public string Header { get; set; }
 
+        public IEnumerable<(DateTime ArchiveDate, TextExpanded expanded)> Histories { get; set; }
 
     }
 }

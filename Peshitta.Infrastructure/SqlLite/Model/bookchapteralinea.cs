@@ -11,7 +11,6 @@ namespace Peshitta.Infrastructure.Sqlite.Model
 		public string comments { get; set; }
 
 		public BookChapter bookchapter { get; set; }
-        public ICollection<BookChapterAlinea>  BookChapterAlineas { get; set; }
-		public ICollection<Text> Texts { get; set; }
+        public ICollection<Text> Texts { get; set; }
 	}
 }

@@ -185,9 +185,9 @@ namespace Peshitta.Data.DB
 
                     }
                 }
-                sb.Replace(Environment.NewLine, "");
-                sb.Replace("\n", "");
-                sb.Replace("\r", "");
+                //sb.Replace(Environment.NewLine, "");
+                //sb.Replace("\n", "");
+                //sb.Replace("\r", "");
                 if (cx == 0)
                 {
                     t.Content = sb.ToString();

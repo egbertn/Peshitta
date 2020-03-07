@@ -7,5 +7,6 @@ namespace Peshitta.Infrastructure.Models
         public int BookChapterAlineaId { get; set; }
         public int Alineaid { get; set; }
         public IEnumerable<TextExpanded> Texts { get; set; }
+       
     }
 }
