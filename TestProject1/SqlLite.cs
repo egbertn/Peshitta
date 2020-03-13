@@ -23,32 +23,40 @@ namespace TestProject1
         string baseF = @"c:\temp\bijbel";
         IMapper mapper;
         DbSqlContext dbSqlContext;
+
         [TestInitialize]
         public void Init()
         {
 
-            var connectionString = ConfigurationManager.ConnectionStrings["bijbel"].ConnectionString;
+            var connectionString = ConfigurationManager.ConnectionStrings["bijbel2"].ConnectionString;
 
+            //var _options = new DbContextOptionsBuilder<DbSqlContext>()
+            //    .UseSqlite(connectionString)
+            //    .Options;
             var _options = new DbContextOptionsBuilder<DbSqlContext>()
-                .UseSqlite(connectionString)
+                .UseSqlServer(connectionString)
                 .Options;
             dbSqlContext = new DbSqlContext(_options);
             _repo = new BijbelRepository(dbSqlContext);
             try
             {
 
-                dbSqlContext.Database.EnsureDeleted();
-                dbSqlContext.Database.EnsureCreated();
+                //dbSqlContext.Database.EnsureDeleted();
+                //dbSqlContext.Database.EnsureCreated();
             }
             catch (InvalidOperationException inv)
             {
 
                 throw inv;
             }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
             var mapConfig = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Peshitta.Infrastructure.Models.Book, Peshitta.Infrastructure.Sqlite.Model.Book>()
-                .ForMember(m => m.abbrevation, opt => opt.MapFrom(m => m.abbreviation == null ? m.Title.Substring(0, 2) : m.abbreviation));
+                .ForMember(m => m.abbrevation, opt => opt.MapFrom(m => m.abbreviation ?? m.Title.Substring(0, 2)));
                 cfg.CreateMap<Peshitta.Infrastructure.Models.BookEdition, Peshitta.Infrastructure.Sqlite.Model.bookedition>().
                 ForMember(m => m.keywords, opt => opt.MapFrom(map => map.keywords != null ? string.Join(",", map.keywords): null));
                 cfg.CreateMap<Peshitta.Infrastructure.Models.Text, Peshitta.Infrastructure.Sqlite.Model.Text>();
@@ -109,14 +117,14 @@ namespace TestProject1
               //  await dbSqlContext.SaveChangesAsync();
             }
 
-
+            await dbSqlContext.SaveChangesAsync();
             foreach (var be in (await kitabDb.BookEditions).Data)
             {
                 var beC = mapper.Map<Peshitta.Infrastructure.Sqlite.Model.bookedition>(be);
                 //beC.bookEditionid = be.Key;
                 dbSqlContext.Add(beC);
             }
-           
+            await dbSqlContext.SaveChangesAsync();
             dbSqlContext.Publications.AddRange(new Peshitta.Infrastructure.Sqlite.Model.Publication { Code = "AB", Name = "Peshitta" },
                 new Peshitta.Infrastructure.Sqlite.Model.Publication { Code = "PS", Name = "Syriac Peshitta" });
             var idsExclude = new[] { 6353, 4985, 4771, 8531 , 3533, 8471, -18867, 7353 };
@@ -129,7 +137,8 @@ namespace TestProject1
                 {
                     mapped.LangId = 90;
                 }
-                dbSqlContext.Add(mapped);            
+                dbSqlContext.Add(mapped);              
+
                 //var p = await dbSqlContext.Words.FirstOrDefaultAsync();
             }
             await dbSqlContext.SaveChangesAsync();
@@ -159,8 +168,9 @@ namespace TestProject1
             foreach (var be in (await kitabDb.BookEditions).Data)
             {
                 var beC = await dbSqlContext.BookEdition.FindAsync(be.bookEditionid);
-                foreach (var chap in (await kitabDb.ChaptersByBookIdAsync(be.bookEditionid)))
+                foreach (var chap in (await kitabDb.ChaptersByBookIdAsync(be.bookid)))
                 {
+                   
                     if (be.langid == 19)
                     {
                      
@@ -174,7 +184,15 @@ namespace TestProject1
                     {
 
                         foreach(var t in ta.Texts)
-                        {
+                        { 
+                            //if (t.BookChapterAlineaid <= 6850) // be.bookEditionid == 1 && ( chap.Key.chapter < 27 || (chap.Key.chapter == 27 && t.Alineaid<=30))
+                            //{
+                            //    continue;
+                            //}
+                            if (await dbSqlContext.Text.AsNoTracking().AnyAsync(a => a.textid == t.TextId ))
+                            {
+                                continue;
+                            }
                             Trace.TraceInformation("Chap {0}, bookedition id {1}, verse {2}", chap.Key.chapter, be.bookEditionid, t.Alineaid);
                             var text = new Peshitta.Infrastructure.Sqlite.Model.Text
                             {
@@ -198,7 +216,7 @@ namespace TestProject1
                                 {
                                     continue;
                                 }
-                                //await _repo.CompressVerse(t.TextId, history.ArchiveDate, history.expanded.Content, history.expanded.Remarks, null);
+                                await _repo.CompressVerse(t.TextId, history.ArchiveDate, history.expanded.Content, history.expanded.Remarks, null);
                             }
                             await _repo.CompressVerse(t.TextId, t.timestamp, t.Content, t.Remarks, null);
 

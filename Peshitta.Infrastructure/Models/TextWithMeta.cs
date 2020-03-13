@@ -10,7 +10,7 @@ namespace Peshitta.Infrastructure.Models
         public int bca { get; set; }
         public int aid { get; set; }
         public int beid { get; set; }
-        public DateTimeOffset ts { get; set; }
+     //   public DateTimeOffset ts { get; set; }
         public int ch { get; set; }
     }
 

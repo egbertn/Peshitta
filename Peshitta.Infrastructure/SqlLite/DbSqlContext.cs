@@ -68,10 +68,10 @@ namespace Peshitta.Infrastructure.Sqlite
                 p.HasOne(o => o.bookedition).WithMany(m => m.Text).HasForeignKey(f => f.bookeditionid);
                 //p.Property(prop => prop.timestamp).HasColumnType("bigint").HasConversion(from => from.ToUnixTimeSeconds(), to => DateTimeOffset.FromUnixTimeSeconds(to));
                 p.Property(prop => prop.timestamp).HasColumnType("bigint").HasConversion(from => from.ToUnixTimeSeconds(), to => DateTimeOffset.FromUnixTimeSeconds(to));
-                p.HasOne(o => o.bookchapteralinea).WithMany(m => m.Texts).HasForeignKey(f => new { f.BookChapterAlineaid, f.Alineaid });
+                p.HasOne(o => o.bookchapteralinea).WithMany(m => m.Texts).HasForeignKey(f => new { f.BookChapterAlineaid, f.Alineaid }).OnDelete(DeleteBehavior.NoAction);
+                p.Property(prop => prop.textid).ValueGeneratedNever();
                 //TODO subclass instead of this
                 p.Ignore(i => i.Content).Ignore(i => i.Header).Ignore(i => i.Remarks);
-                p.HasIndex(i => i.bookeditionid).HasName("ix_bookeditionid");
             });
 
           
@@ -103,7 +103,8 @@ namespace Peshitta.Infrastructure.Sqlite
                 p.ToTable("words");
                 p.HasKey(k => k.id);
                 p.HasIndex(k => new { k.word, k.LangId }).HasName("idx_words");
-                p.Property(prop => prop.id).ValueGeneratedOnAdd().IsRequired();               
+                p.Property(prop => prop.id).ValueGeneratedNever().IsRequired();
+                p.Property(prop => prop.word).HasColumnType("nvarchar(100)");
             });
             
 

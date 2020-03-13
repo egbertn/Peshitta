@@ -17,7 +17,7 @@ namespace Peshitta.Infrastructure
                                                             '=', '/', '*', '\r', '\n', '„', '—', '%', '…', '·', '´'};
 
         private readonly DbSqlContext _context;
-                private static ILookup<int, words> wordsCache;
+        private static ILookup<int, words> wordsCache;
         private static IDictionary<Models.WordLanguageKey, int> idCache;
         private static readonly object locker = new object();
 
@@ -373,7 +373,7 @@ namespace Peshitta.Infrastructure
                                 }
                             }
                             // [: or (; ????
-                            else if (addRBracket || addRParenthesis && (startAt + wordLen + lookahead + 1 < lineLen2))
+                            else if ((addRBracket || addRParenthesis) && (startAt + wordLen + lookahead + 1 < lineLen2))
                             {
                                 addColon = content[startAt + wordLen + lookahead] == ':';
                                 if (addColon)
@@ -781,7 +781,7 @@ namespace Peshitta.Infrastructure
 
         public async Task<IEnumerable<Publication>> PublicationCodes()
         {
-            var result = await _context.Publications.Where(pc => pc.Searchable).ToArrayAsync();
+            var result = await _context.Publications.Where(pc => pc.Searchable == true).ToArrayAsync();
             return result;
         }
 
@@ -816,37 +816,37 @@ namespace Peshitta.Infrastructure
             }
 
             var foundWord = isNumber ? await _context.Words.SingleOrDefaultAsync(a => a.number == number && a.LangId == langId) :
-                await _context.Words.FromSqlRaw("SELECT * FROM words WHERE word = {0} AND LangId = {1} LIMIT 1", w, langId).FirstOrDefaultAsync();
+                await _context.Words.FromSqlRaw("SELECT * FROM words WHERE word = {0} AND LangId = {1}", w, langId).FirstOrDefaultAsync();
             return foundWord;
         }
 
 
-        public async Task<Models.TextWithMeta> MetaDataForPublications (IEnumerable<string> pubs)
+        public async Task<Models.TextWithMeta> MetaDataForPublications(IEnumerable<string> pubs)
         {
-            var beData =  await _context.BookEdition.Where(w => pubs.Contains(w.publishercode)).Select(s =>
-                new Models.BookEditionMeta
-                {
-                    beid = s.bookEditionid,
-                    bookid = s.bookid, 
-                    pc = s.publishercode, 
-                    langid = s.langid, 
-                    title = s.title, 
-                    entitle= s.EnglishTitle, 
-                   descr = s.description, 
-                   bo = s.bookOrder, 
-                    abr= s.nativeAbbreviation }
+            var beData = await _context.BookEdition.Where(w => pubs.Contains(w.publishercode)).Select(s =>
+               new Models.BookEditionMeta
+               {
+                   beid = s.bookEditionid,
+                   bookid = s.bookid,
+                   pc = s.publishercode,
+                   langid = s.langid,
+                   title = s.title,
+                   entitle = s.EnglishTitle,
+                   descr = s.description,
+                   bo = s.bookOrder,
+                   abr = s.nativeAbbreviation }
                 ).ToArrayAsync();
             var bookeditionIds = beData.Select(s => s.beid);
             var textData = await _context.Text
                 .Where(w => bookeditionIds.Contains(w.bookeditionid)).OrderBy(o => o.BookChapterAlineaid).ThenBy(o => o.Alineaid)
-                .Select(s => 
+                .Select(s =>
                     new Models.TextMeta
                     {
                         textid = s.textid,
                         bca = s.BookChapterAlineaid,
                         aid = s.Alineaid,
                         beid = s.bookeditionid,
-                        ts = s.timestamp,
+                     //   ts = s.timestamp,
                         ch = s.bookchapteralinea.bookchapter.chapter
                     }).ToArrayAsync();
 
@@ -855,7 +855,7 @@ namespace Peshitta.Infrastructure
                 Text = textData,
                 BookEditions = beData
             };
-            
+
             return data;
         }
         /// <summary>
@@ -896,9 +896,8 @@ namespace Peshitta.Infrastructure
             {
                 w = w.ToLower();
             }
-            int number = 0;
             // numbers can become huge, and thus, waste space!
-            bool isNumber = int.TryParse(w, out number);
+            bool isNumber = int.TryParse(w, out int number);
             var foundWord = await FindWord(w, langid);
 
             if (foundWord == null)
@@ -917,6 +916,9 @@ namespace Peshitta.Infrastructure
                 {
                     foundWord.word = w;
                 }
+                //TODO findout if this is optional, if so, leave out.
+                var maxWordId = await _context.Words.MaxAsync(m => m.id.Value) + 1;
+                foundWord.id = maxWordId;
                 _context.Words.Add(foundWord);
                 await _context.SaveChangesAsync();
                 didAdd = true;
@@ -993,5 +995,49 @@ namespace Peshitta.Infrastructure
                 }
             }
         }
+
+        public async Task<IEnumerable<int>> BookEditionsByPublicationCode(string pubcode)
+        {
+            var ret = await _context.BookEdition.Where(p => p.publishercode == pubcode)
+                    .OrderBy(o => o.bookOrder)
+                .Select(s => s.bookEditionid).ToArrayAsync();
+            return ret;
+        }
+        public async Task<IEnumerable<Models.BookEdition>> BookInfoByBookeditionIds(IEnumerable<int> bookEditionIds)
+        {
+            var ret = await _context.BookEdition.Where(b => bookEditionIds.Contains(b.bookEditionid)).
+            OrderBy(o => o.bookOrder).Select(c => new Models.BookEdition()
+            {
+                bookEditionid = c.bookEditionid,
+                EnglishTitle = c.EnglishTitle,
+                title = c.title,
+                isbn = c.isbn
+            }).ToArrayAsync();
+            return ret;
+        }
+        public async Task<Models.VerseInfo> GetVerseToolTip(int textid, int langid)
+        {
+            var data = await _context.Text.AsNoTracking().Where(w => w.textid == textid)
+             .Include(i => i.bookedition).Include(i => i.bookchapteralinea.bookchapter)
+             .FirstOrDefaultAsync();
+            if (data != null)
+            {
+
+                // var bc = _db.BookChapter[bca.BookchapterId];
+                // var booked = _db.Contents.BookEditions[text.bookeditionid];
+
+                var retVal = new Models.VerseInfo
+                {
+                    Book = data.bookedition.title,
+                    Chapter = data.bookchapteralinea.bookchapter.chapter,
+                    TextId = textid,
+                    Verse = data.Alineaid,
+                    BookEnglish = data.bookedition.EnglishTitle
+                };
+                return retVal;
+            }
+            return null;
+        }
+
     }
 }

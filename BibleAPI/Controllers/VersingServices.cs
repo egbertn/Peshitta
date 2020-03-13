@@ -6,117 +6,99 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Peshitta.Infrastructure.Models;
-using Peshitta.Infrastructure.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using Peshitta.Infrastructure;
 
 namespace peshitta.nl.Api
 {
-    [Route("[controller]")]
-    public class VersingController : ControllerBase
+  [Route("[controller]")]
+  public class VersingController : ControllerBase
+  {
+    //TODO 
+    private readonly ILogger<VersingController> _logger;
+    private readonly BijbelRepository _repo;
+    public VersingController(BijbelRepository repo, ILogger<VersingController> logger)
     {
-        //TODO 
-        private readonly DbSqlContext _db;
-        private readonly ILogger<VersingController> _logger;
-        public VersingController(DbSqlContext db, ILogger<VersingController> logger)
-        {
-            _db = db;
-            _logger = logger;
-        }
-        [HttpGet("GetBookEditionsFromPub/{pubid}")]
-        public async Task<IActionResult> GetBookEditionsFromPub(string pubId)
-        {
-            try
-            {
-                var list = await _db.BookEdition.Where(p => p.publishercode == pubId).
-                    Select(s => s.bookEditionid).ToArrayAsync();
-
-                return Ok(list);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Failure {0}", ex);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-
-        }
-        [HttpPost("GetBookInfos")]
-        public async Task<IActionResult> GetBookInfos([FromBody] IEnumerable<int> bookeditionIds)
-        {
-            try
-            {
-                //TODO: replace with COL.
-                var lst = await _db.BookEdition.Where(b => bookeditionIds.Contains(b.bookEditionid)).
-                    OrderBy(o => o.bookOrder).Select(c => new BookEdition()
-                    {
-                        bookEditionid = c.bookEditionid,
-                        EnglishTitle = c.EnglishTitle,
-                        title = c.title,
-                        isbn = c.isbn
-                    }).ToArrayAsync();
-
-                return Ok(lst);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Failure {0}", ex);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-
-        }
-
-        [HttpGet("GetVersToolTip/{textid}/{langid}")]
-        public async Task<IActionResult> GetVersToolTip(int textid, int langid)
-        {
-            try
-            {
-                var data = await _db.Text.AsNoTracking().Where(w => w.textid == textid)
-                    .Include(i => i.bookedition).Include(i => i.bookchapteralinea.bookchapter)
-                    .FirstOrDefaultAsync();
-                if (data != null)
-                {
-
-                    // var bc = _db.BookChapter[bca.BookchapterId];
-                    // var booked = _db.Contents.BookEditions[text.bookeditionid];
-
-                    var retVal = new
-                    {
-                        Book = data.bookedition.title,
-                        Chapter = data.bookchapteralinea.bookchapter.chapter,
-                        TextId = textid,
-                        Verse = data.Alineaid,
-                        BookEnglish = data.bookedition.EnglishTitle
-                    };
-
-                    return Ok(retVal);
-
-                }
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Failure {0}", ex);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-
-        }
-        [HttpGet("GetEnglishTitleFromBookEdition/{bookeditionId}")]
-        public async Task<IActionResult> GetEnglishTitleFromBookEdition(int bookeditionId)
-        {
-            try
-            {
-                var res = await _db.BookEdition.AsNoTracking().
-                    Where(w => w.bookEditionid == bookeditionId).
-                    Select(s => s.EnglishTitle).FirstOrDefaultAsync();
-
-                return Ok(res);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Failure {0}", ex);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-            
-        }
+      _repo = repo;
+      
+      _logger = logger;
     }
+    [HttpGet("GetBookEditionsFromPub/{pubid}")]
+    [ProducesResponseType(typeof(IEnumerable<int>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetBookEditionsFromPub(string pubid)
+    {
+      try
+      {
+        var list = await _repo.BookEditionsByPublicationCode(pubid);
+
+        return Ok(list);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Failure {0}", ex);
+        return StatusCode(StatusCodes.Status500InternalServerError);
+      }
+
+    }
+    [HttpPost("GetBookInfos")]
+    public async Task<IActionResult> GetBookInfos([FromBody] IEnumerable<int> bookeditionIds)
+    {
+      try
+      {
+        //TODO: replace with COL.
+        var lst =await  _repo.BookInfoByBookeditionIds(bookeditionIds);
+
+        return Ok(lst);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Failure {0}", ex);
+        return StatusCode(StatusCodes.Status500InternalServerError);
+      }
+
+    }
+
+    [HttpGet("GetVersToolTip/{textid}/{langid}")]
+    [ProducesResponseType(typeof(VerseInfo), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetVersToolTip(int textid, int langid)
+    {
+      try
+      {
+        var data = await _repo.GetVerseToolTip(textid, langid);
+        if (data!=null) { 
+          return Ok(data);
+
+        }
+        return NotFound();
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Failure {0}", ex);
+        return StatusCode(StatusCodes.Status500InternalServerError);
+      }
+
+    }
+    [Obsolete("Use BookInfo")]
+    [HttpGet("GetEnglishTitleFromBookEdition/{bookeditionId}")]
+    public async Task<IActionResult> GetEnglishTitleFromBookEdition(int bookeditionId)
+    {
+      try
+      {
+        var res = await _repo.BookInfoByBookeditionIds(new[] { bookeditionId });
+        if (res?.Any() ?? false)
+        {
+          var data = res.First();
+          return Ok(data.EnglishTitle);
+        }
+
+        return NotFound();
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Failure {0}", ex);
+        return StatusCode(StatusCodes.Status500InternalServerError);
+      }
+
+    }
+  }
 }

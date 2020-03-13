@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using peshitta.nl.Api;
 using Peshitta.Infrastructure;
-using Peshitta.Infrastructure.Sqlite;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace peshitta.nl
 {
@@ -40,6 +38,18 @@ namespace peshitta.nl
         return StatusCode(StatusCodes.Status500InternalServerError);
       }
 
+    }
+    [HttpGet("publications")]
+    [ProducesResponseType(typeof(IEnumerable<Peshitta.Infrastructure.Models.Publication>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Publications()
+    {
+      var result = await _repo.PublicationCodes();
+      return Ok(result);
+    }
+    [HttpGet("config")] //staticfiles does not work nicely with cors
+    public async Task<IActionResult> GetConfig()
+    {
+      return Content(await System.IO.File.ReadAllTextAsync("wwwroot/config/appConfig.json"), "application/json");
     }
     [HttpGet("BookMetaData")]
     public async Task<IActionResult> GetBookMetaData([FromQuery] IEnumerable<string> pub)
