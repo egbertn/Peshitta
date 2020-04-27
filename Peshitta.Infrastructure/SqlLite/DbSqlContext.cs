@@ -37,7 +37,7 @@ namespace Peshitta.Infrastructure.Sqlite
                 p.HasKey(k => k.bookid);
                 p.Property(k => k.bookid).ValueGeneratedNever();
                 p.Property(prop => prop.Title).IsRequired().HasMaxLength(50);
-                p.Property(prop => prop.abbrevation).IsRequired().HasMaxLength(8);
+                p.Property(prop => prop.abbrevation).IsUnicode(false).IsRequired().HasMaxLength(8);
             });
 
 

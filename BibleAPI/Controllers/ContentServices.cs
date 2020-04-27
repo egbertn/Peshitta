@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using peshitta.nl.Api;
 using Peshitta.Infrastructure;
+using Peshitta.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,16 +41,20 @@ namespace peshitta.nl
       }
 
     }
+    /// <summary>
+    /// Get multiple verses in one GET operation
+    /// </summary>
+    /// <param name="textid">an array of textid=number tuples</param>
     [HttpGet("GetVerses")]
-    [ProducesResponseType(typeof(IEnumerable<Peshitta.Infrastructure.Sqlite.Model.Text>),  StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<TextExpanded>),  StatusCodes.Status200OK)]
     public async Task<ActionResult> GetVerses([FromQuery] IEnumerable<int> textid)
     {
       try
       {
        
-        var result = new List<Peshitta.Infrastructure. Sqlite.Model.Text>(textid.Count());
+        var result = new List<TextExpanded>(textid.Count());
         foreach(var t in textid)
-          result.Add( await  _repo.DecompressVerse(t));
+          result.Add(  (await _repo.DecompressVerse(t)).ToDtoModelExpanded());
         return Ok(result);
       }
       catch (Exception ex)

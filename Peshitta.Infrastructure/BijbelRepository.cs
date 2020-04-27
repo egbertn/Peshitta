@@ -112,7 +112,7 @@ namespace Peshitta.Infrastructure
                 bool addLT = false, addGT = false; // < and >
                 bool addBang = false, addQMark = false;
                 bool addSlash = false, addSlashAfter = false; // / for </b> for instance
-                for (; ; )
+                for (; startAt < lineLen2; )
                 {
                     foundSplits = content.IndexOfAny(splitters, startAt);
                     // this normally happens at the very last word of a line

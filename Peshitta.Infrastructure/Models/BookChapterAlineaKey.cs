@@ -62,17 +62,7 @@ namespace Peshitta.Infrastructure.Models
                 return outp;
                 //p.GetHashCode() does not deliver unique values
             }
-        }
-
-        public bool Equals(BookChapterAlineaKey x, BookChapterAlineaKey y)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetHashCode(BookChapterAlineaKey obj)
-        {
-            throw new NotImplementedException();
-        }
+        }     
 
      
 
