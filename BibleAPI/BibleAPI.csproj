@@ -18,9 +18,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Peshitta.Infrastructure\Peshitta.Infrastructure.csproj" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="5.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.3.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.3.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="5.3.3" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
   </ItemGroup>
 
