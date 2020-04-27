@@ -25,8 +25,8 @@ namespace peshitta.nl
       _repo = db;
       _logger = logger;
     }
-    [HttpGet("GetVerse/{pTextId}")]
-    [ProducesResponseType(typeof(Peshitta.Infrastructure.Sqlite.Model.Text), StatusCodes.Status200OK)]
+    [HttpGet("GetVerse/{pTextId}"), Obsolete("Uses SqliteModel directly use GetVerses")]
+    [ProducesResponseType(StatusCodes.Status200OK)] // do not add type, Swashbuckle will fail
     public async Task<ActionResult> GetVerse(int pTextId)
     {
       try
