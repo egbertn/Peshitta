@@ -40,6 +40,22 @@ namespace peshitta.nl.Api
       }
 
     }
+    //[HttpGet]
+    //public async Task<IActionResult> GetChapterAlineas(IEnumerable<int> bookeditionIds)
+    //{
+    //  try
+    //  {
+    //    //TODO: replace with COL.
+    //    var lst = await _repo.GetChapterAlineaInfoFromBookEditionId(bookeditionIds);
+
+    //    return Ok(lst);
+    //  }
+    //  catch (Exception ex)
+    //  {
+    //    _logger.LogError("Failure {0}", ex);
+    //    return StatusCode(StatusCodes.Status500InternalServerError);
+    //  }
+    //}
     [HttpPost("GetBookInfos")]
     public async Task<IActionResult> GetBookInfos([FromBody] IEnumerable<int> bookeditionIds)
     {

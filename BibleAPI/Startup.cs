@@ -15,6 +15,7 @@ namespace BibleAPI
 {
   public class Startup
   {
+    private const string CORS = "mypolicy";
     public Startup(IConfiguration configuration)
     {
       Configuration = configuration;
@@ -25,8 +26,16 @@ namespace BibleAPI
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddCors(options =>
+      {
+        options.AddPolicy(CORS,
+        builder =>
+        {
+          builder.WithOrigins("http://localhost:9000",
+                              "https://www.peshitta.nl").SetIsOriginAllowed(_ => true).WithHeaders("Content-Type", "accept").WithMethods("GET", "POST", "OPTIONS").SetPreflightMaxAge(TimeSpan.FromSeconds(3600)); ;
+        });
+      });
       // Add framework services.
-
       services.AddTransient<BijbelRepository>()
       .AddDbContext<DbSqlContext>(options =>
       {
@@ -75,8 +84,10 @@ namespace BibleAPI
       });
 
       app.UseStaticFiles();
-      app.UseRouting();
+      
+      app.UseRouting().UseCors(CORS);
 
+      app.UseAuthorization();
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapGet("/", async context =>

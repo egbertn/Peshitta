@@ -25,7 +25,8 @@ namespace peshitta.nl
       _logger = logger;
     }
     [HttpGet("GetVerse/{pTextId}")]
-    public async Task<IActionResult> GetVerse(int pTextId)
+    [ProducesResponseType(typeof(Peshitta.Infrastructure.Sqlite.Model.Text), StatusCodes.Status200OK)]
+    public async Task<ActionResult> GetVerse(int pTextId)
     {
       try
       {
@@ -39,20 +40,39 @@ namespace peshitta.nl
       }
 
     }
+    [HttpGet("GetVerses")]
+    [ProducesResponseType(typeof(IEnumerable<Peshitta.Infrastructure.Sqlite.Model.Text>),  StatusCodes.Status200OK)]
+    public async Task<ActionResult> GetVerses([FromQuery] IEnumerable<int> textid)
+    {
+      try
+      {
+       
+        var result = new List<Peshitta.Infrastructure. Sqlite.Model.Text>(textid.Count());
+        foreach(var t in textid)
+          result.Add( await  _repo.DecompressVerse(t));
+        return Ok(result);
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError("Failure {0}", ex);
+        return StatusCode(StatusCodes.Status500InternalServerError);
+      }
+
+    }
     [HttpGet("publications")]
     [ProducesResponseType(typeof(IEnumerable<Peshitta.Infrastructure.Models.Publication>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Publications()
+    public async Task<ActionResult> Publications()
     {
       var result = await _repo.PublicationCodes();
       return Ok(result);
     }
     [HttpGet("config")] //staticfiles does not work nicely with cors
-    public async Task<IActionResult> GetConfig()
+    public async Task<ActionResult> GetConfig()
     {
       return Content(await System.IO.File.ReadAllTextAsync("wwwroot/config/appConfig.json"), "application/json");
     }
     [HttpGet("BookMetaData")]
-    public async Task<IActionResult> GetBookMetaData([FromQuery] IEnumerable<string> pub)
+    public async Task<ActionResult> GetBookMetaData([FromQuery] IEnumerable<string> pub)
     {
       if (pub == null || !pub.Any())
       {
@@ -71,7 +91,7 @@ namespace peshitta.nl
 
     }
     [HttpGet("getversehistory/{pTextId}")]
-    public async Task<IActionResult> GetVerseHistory(int pTextId)
+    public async Task<ActionResult> GetVerseHistory(int pTextId)
     {
       try
       {
@@ -86,7 +106,7 @@ namespace peshitta.nl
 
     }
     [HttpPost("CompareTimeStamp")]
-    public async Task<IActionResult> CompareTimeStamp([FromBody] TimestampParams pars)
+    public async Task<ActionResult> CompareTimeStamp([FromBody] TimestampParams pars)
     {
       try
       {
@@ -139,7 +159,7 @@ namespace peshitta.nl
     //}
     //TODO: authorization
     [HttpPost("UpdateVerse")]
-    public async Task<IActionResult> UpdateVerse([FromBody] VerseTemp vTemp)
+    public async Task<ActionResult> UpdateVerse([FromBody] VerseTemp vTemp)
     {
       try
       {
