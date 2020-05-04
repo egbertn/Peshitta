@@ -29,7 +29,7 @@ namespace Peshitta.Infrastructure.Sqlite.Model
 		public short LangId { get; set; }
 		public bool IsNumber { get; set; }
 		public int? number { get; set; }
-
+        public int? hash { get; set; }
 		public ICollection<TextWords> textwords { get; set; }
 		public ICollection<TextWordsHistory> textwordsHistory { get; set; }
 	}

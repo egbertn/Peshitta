@@ -18,7 +18,7 @@ namespace Peshitta.Infrastructure
 
         private readonly DbSqlContext _context;
         private static ILookup<int, words> wordsCache;
-        private static IDictionary<Models.WordLanguageKey, int> idCache;
+      
         private static readonly object locker = new object();
 
         public BijbelRepository(DbSqlContext context)
@@ -513,7 +513,6 @@ namespace Peshitta.Infrastructure
             lock (locker)
             {
                 wordsCache = GetWordsCache();
-                idCache = _context.Words.Where(w => !w.IsNumber && !string.IsNullOrEmpty(w.word)).ToDictionary(w => new Models.WordLanguageKey(w.word, w.LangId), i => i.id.Value);
             }
         }
 
@@ -563,7 +562,7 @@ namespace Peshitta.Infrastructure
                     s.timestamp,
                     s.bookeditionid,
                     s.bookedition,
-                    TextWords = s.TextWords.OrderBy(o => o.id).AsEnumerable()
+                    TextWords = s.TextWords.OrderBy(o => o.id).AsEnumerable(),
                 }).FirstOrDefaultAsync();
             if (query == null)
             {
@@ -790,7 +789,7 @@ namespace Peshitta.Infrastructure
             var result = await _context.Text.Where(w => textids.Contains(w.textid)).Select(s => s.timestamp).ToArrayAsync();
             return result;
         }
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -805,18 +804,11 @@ namespace Peshitta.Infrastructure
             }
             // numbers can become huge, and thus, waste space!
             bool isNumber = int.TryParse(w, out int number);
-            if (idCache == null)
-            {
-                UpdateWordsCache();
-            }
-            var key = new Models.WordLanguageKey(w, langId);
-            if (idCache.ContainsKey(key))
-            {
-                return new words { id = idCache[key], word = w };
-            }
 
-            var foundWord = isNumber ? await _context.Words.SingleOrDefaultAsync(a => a.number == number && a.LangId == langId) :
-                await _context.Words.FromSqlRaw("SELECT * FROM words WHERE word = {0} AND LangId = {1}", w, langId).FirstOrDefaultAsync();
+            var key = new Models.WordLanguageKey(w, langId);
+
+            var foundWord = await (isNumber ? _context.Words.Where(a => a.number == number && a.LangId == langId) :
+                 _context.Words.Where(h => h.hash == key.GetHashCode())).FirstOrDefaultAsync();
             return foundWord;
         }
 
@@ -890,7 +882,6 @@ namespace Peshitta.Infrastructure
         {
             //short wordid = 0;
             // we only find case sensitve searches
-            bool didAdd = false;
             IsCapitalized(w, out bool capitalized, out bool allCaps);
             if (capitalized || allCaps)
             {
@@ -921,7 +912,6 @@ namespace Peshitta.Infrastructure
                 foundWord.id = maxWordId;
                 _context.Words.Add(foundWord);
                 await _context.SaveChangesAsync();
-                didAdd = true;
             }
             var wordid = foundWord.id.Value;
             var tw = new TextWords()
@@ -956,8 +946,6 @@ namespace Peshitta.Infrastructure
                 AddSlashAfter = pAddSlashAfter,
                 AddEqual = pAddEqual,
                 PrefixAmp = pAddAmp
-
-
             };
             //tw.word = foundWord;            
             t.TextWords.Add(tw);
@@ -974,7 +962,7 @@ namespace Peshitta.Infrastructure
                 {
                     if (char.IsUpper(word[x]))
                     {
-                        //switch of. This is not a word like God or 'In' or 'Jahweh' or 'And' but it might have been God or LORD
+                        //switch off. This is not a word like God or 'In' or 'Jahweh' or 'And' but it might have been God or LORD
                         if (x > 0)
                         {
                             pIsCapitalized = false;

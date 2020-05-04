@@ -102,7 +102,7 @@ namespace Peshitta.Infrastructure.Sqlite
             {
                 p.ToTable("words");
                 p.HasKey(k => k.id);
-                p.HasIndex(k => new { k.word, k.LangId }).HasName("idx_words");
+                p.HasIndex(k => k.hash).HasName("idx_hash").IsUnique(true);
                 p.Property(prop => prop.id).ValueGeneratedNever().IsRequired();
                 p.Property(prop => prop.word).HasColumnType("nvarchar(100)");
             });

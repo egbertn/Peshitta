@@ -26,7 +26,7 @@ namespace Peshitta.Infrastructure.Models
             int hashCode;
             fixed (byte* src = bytes)
             {
-                Utils.HashData.Hash(src, bytes.Length, (byte*)&hashCode, 4);
+                Utils.HashData.Hash(src, bytesCount + 4, (byte*)&hashCode, 4);
             }
             
             return hashCode;
