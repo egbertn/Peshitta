@@ -11,6 +11,7 @@
         {
             id = newId;
             wordid = tw.wordid;
+            words = tw.words;
             ArchiveDate = now;
             textid = tw.textid;
             AddComma = tw.AddComma;

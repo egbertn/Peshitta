@@ -249,15 +249,29 @@ namespace TestProject1
         public async Task UpdateLanguage()
         {
             var words = dbSqliteContext.Words;
-            foreach (var w in words.Where(w => w.LangId == 90 && w.IsNumber == true).ToArray())
+            //foreach (var w in words.Where(w => w.LangId == 90 && w.IsNumber == true).ToArray())
+            //{
+            //    w.LangId = 19;
+            //    dbSqliteContext.Words.Update(w);
+            //}
+            foreach (var w in words.Where(w => w.LangId == 19 && w.IsNumber == false).ToArray())
             {
                 w.LangId = 19;
-                dbSqliteContext.Words.Update(w);
-            }
-            foreach (var w in words.Where(w => w.LangId == 90 && w.IsNumber == false).ToArray().Where(w=>ContainsAramaic(w.word) == false))
-            {
-                w.LangId = 19;
-                dbSqliteContext.Words.Update(w);
+                var key = new WordLanguageKey(w.word, w.LangId);
+                if (w.hash != key.GetHashCode())
+                {
+                    w.hash = key.GetHashCode();
+                    try
+                    {
+                        dbSqliteContext.Words.Update(w);
+                        await dbSqliteContext.SaveChangesAsync();
+                    }
+                    catch (DbUpdateException ex)
+                    {
+                        Trace.TraceError(ex.Message);
+                    }
+                }
+              
             }
             await dbSqliteContext.SaveChangesAsync();
         }
@@ -370,15 +384,17 @@ namespace TestProject1
                 foreach (var chap in (await kitabDb.ChaptersByBookIdAsync(be.bookid)))
                 {
                    
-                    if (be.langid == 19)
+                    if (be.langid == 19 )
                     {
                      
                         kitabDb.ActivePublications = new []{ "AB" };
+                        if (!(new[] { 31,32}.Contains(be.bookEditionid )))
                         continue;
                     }
                     else
                     {
                         kitabDb.ActivePublications = new []{ "PS" };
+                        continue;
                     }
                     foreach (var ta in (await kitabDb.LoadChapterAsync(chap.Key.chapter, be.bookEditionid)).Data)
                     {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 using Peshitta.Infrastructure.Sqlite;
 using Peshitta.Infrastructure.Sqlite.Model;
 using System;
@@ -18,7 +17,7 @@ namespace Peshitta.Infrastructure
 
         private readonly DbSqlContext _context;
         private static ILookup<int, words> wordsCache;
-      
+
         private static readonly object locker = new object();
 
         public BijbelRepository(DbSqlContext context)
@@ -37,7 +36,7 @@ namespace Peshitta.Infrastructure
             //_context.dcd.Transaction = dcd.Connection.BeginTransaction();
             var trans = await _context.Database.BeginTransactionAsync();
             var t = await _context.Text.
-                Include(i => i.TextWords).
+                Include(i => i.TextWords).ThenInclude(th => th.words).
                 Include(i => i.bookedition).
                 Include(i => i.bookchapteralinea).Where(w => w.textid == textId).FirstOrDefaultAsync();
 
@@ -59,13 +58,14 @@ namespace Peshitta.Infrastructure
                 t.TextWordsHistories.Add(twh);
 
             }
+           await _context.SaveChangesAsync();
             // _context.AddRange(t.TextWordsHistories);
 
             // this includes footer, header and body
             _context.RemoveRange(t.TextWords);
             t.TextWords.Clear();
             var textWords = _context.TextWords.AsNoTracking();
-            var maxid = await textWords.AnyAsync() ? await textWords.MaxAsync(a => a.id) : 1;
+            maxTextWordId = await textWords.AnyAsync() ? await textWords.MaxAsync(a => a.id) : 1;
 
             for (int x = 0; x < 3; x++)
             {
@@ -132,7 +132,7 @@ namespace Peshitta.Infrastructure
                     theWord = content.Substring(startAt, wordLen);
                     // this is the symbol which caused a split on the word
 
-                    //there is a symbol? 
+                    //there is a symbol?
                     // deal with ( [ ' and "
                     // this section deals with symbols before any word such as ( [ - and space
                     if (wordLen == 0)
@@ -221,7 +221,7 @@ namespace Peshitta.Infrastructure
                     {
                         char ch = foundChar;
 
-                        //compressing space, comma and dot delivers a compressionrate of +/- 20%                       
+                        //compressing space, comma and dot delivers a compressionrate of +/- 20%
                         addComma = ch == ',';
                         addDot = ch == '.';
                         if (!addSpace) addSpace = ch == ' ';
@@ -383,7 +383,7 @@ namespace Peshitta.Infrastructure
                                 }
                             }
 
-                            //we allow symbol + space                                               
+                            //we allow symbol + space
                             //if (mappedSymbol && !addSpace)
                             //{
                             //    if (startAt + wordLen + lookahead > lineLen2)
@@ -403,18 +403,12 @@ namespace Peshitta.Infrastructure
                                 }
                             }
                         }
-                        if ((maxid = await CompressRange(t, theWord, addSpace, addDot, addComma, x == 1, x == 2,
+                        await CompressRange(t, theWord, addSpace, addDot, addComma, x == 1, x == 2,
                             addColon, addSemiColon, addHyphen, addLBracket, addRBracket, addRParenthesis,
                             addLParenthesis, addLSQuote, addRSQuote, addLDQuote, addRDQuote, addLT, addGT, addSlash, addBang,
-                            preSpace, addQMark, addSlashAfter, addEqual, addAmp, t.bookedition.langid, maxid)) > 0)
-                        {
-                            didAdd = true;
+                            preSpace, addQMark, addSlashAfter, addEqual, addAmp, t.bookedition.langid);
 
-                        }
-                        if (false)
-                        {
 
-                        }
                         addAmp = preSpace = addEqual = addRDQuote = addDot = addRSQuote = addRBracket =
                          addRParenthesis = addBang = addSlash =
                          addHyphen = addSemiColon = addColon =
@@ -448,7 +442,7 @@ namespace Peshitta.Infrastructure
                             }
                             // look ahead for the case of ' or "[space]
                             // now this will be fine
-                            //eg. 'Abraham', a child of God. You see, ' will be seperately encoded. 
+                            //eg. 'Abraham', a child of God. You see, ' will be seperately encoded.
                             // However, ' is followed by a comma and a space. The ' needs two bits set on, the comma and the space.
                             // deal with <span title="Jezus">Jeshua</span>, blah
                             if (foundSplits + 2 < lineLen2)
@@ -472,16 +466,15 @@ namespace Peshitta.Infrastructure
                             }
                         }
 
-                        if (foundChar > '\0' &&
-                            (maxid = await CompressRange(t,
-                            new string(foundChar, 1), addSpace, addDot, addComma, x == 1, x == 2,
-                            false, false,
-                            false, false, false, false, false, false,
-                            addRSQuote, false, addRDQuote, false, false, false, false,
-                            false, false, false, false, false, t.bookedition.langid, maxid)) > 0)
+                        if (foundChar > '\0' )
                         {
                             didAdd = true;
-
+                            await CompressRange(t,
+                                new string(foundChar, 1), addSpace, addDot, addComma, x == 1, x == 2,
+                                false, false,
+                                false, false, false, false, false, false,
+                                addRSQuote, false, addRDQuote, false, false, false, false,
+                                false, false, false, false, false, t.bookedition.langid);
                         }
                         addRDQuote = addRSQuote = false;
                         foundSplits++;
@@ -789,9 +782,9 @@ namespace Peshitta.Infrastructure
             var result = await _context.Text.Where(w => textids.Contains(w.textid)).Select(s => s.timestamp).ToArrayAsync();
             return result;
         }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="textid"></param>
         /// <param name="w">The single word to be converted to a number</param>
@@ -807,7 +800,7 @@ namespace Peshitta.Infrastructure
 
             var key = new Models.WordLanguageKey(w, langId);
 
-            var foundWord = await (isNumber ? _context.Words.Where(a => a.number == number && a.LangId == langId) :
+            var foundWord = await (isNumber ? _context.Words.Where(a => a.number == number && a.LangId == langId ) :
                  _context.Words.Where(h => h.hash == key.GetHashCode())).FirstOrDefaultAsync();
             return foundWord;
         }
@@ -850,13 +843,15 @@ namespace Peshitta.Infrastructure
 
             return data;
         }
+        private static int maxTextWordId;
+        private static int? maxWordId;
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="textid"></param>
         /// <param name="w">The single word to be converted to a number</param>
         /// <returns> the new maxid from textwords</returns>
-        private async Task<int> CompressRange(Text t, string w,
+        private async Task CompressRange(Text t, string w,
             bool pAddSpace,
             bool addDot,
             bool addComma,
@@ -877,7 +872,7 @@ namespace Peshitta.Infrastructure
             bool paddGT,
             bool paddSlash,
             bool paddBang, bool addPreSpace, bool pAddQMark, bool pAddSlashAfter, bool pAddEqual,
-            bool pAddAmp, int langid, int maxid
+            bool pAddAmp, int langid
             )
         {
             //short wordid = 0;
@@ -896,7 +891,7 @@ namespace Peshitta.Infrastructure
                 foundWord = new words()
                 {
                     IsNumber = isNumber,
-                    //TODO: make language 
+                    //TODO: make language
                     LangId = (short)langid
                 };
                 if (isNumber)
@@ -908,15 +903,23 @@ namespace Peshitta.Infrastructure
                     foundWord.word = w;
                 }
                 //TODO findout if this is optional, if so, leave out.
-                var maxWordId = await _context.Words.MaxAsync(m => m.id.Value) + 1;
+                if (maxWordId == null)
+                {
+                    maxWordId = await _context.Words.MaxAsync(m => m.id.Value);
+                }
+                maxWordId++;
                 foundWord.id = maxWordId;
+                if (!isNumber)
+                {
+                    foundWord.hash = new Models.WordLanguageKey(w, langid).GetHashCode();
+                }
                 _context.Words.Add(foundWord);
-                await _context.SaveChangesAsync();
-            }
+			}
             var wordid = foundWord.id.Value;
-            var tw = new TextWords()
+
+            var tw = new TextWords
             {
-                id = ++maxid,
+                id = ++maxTextWordId,
                 textid = t.textid,
                 IsAllCaps = allCaps,
                 AddSpace = pAddSpace,
@@ -947,9 +950,9 @@ namespace Peshitta.Infrastructure
                 AddEqual = pAddEqual,
                 PrefixAmp = pAddAmp
             };
-            //tw.word = foundWord;            
+            tw.words = foundWord;
             t.TextWords.Add(tw);
-            return maxid;
+
         }
         private static void IsCapitalized(string word, out bool pIsCapitalized, out bool pIsAllCaps)
         {
