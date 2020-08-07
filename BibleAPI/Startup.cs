@@ -84,7 +84,7 @@ namespace BibleAPI
       });
 
       app.UseStaticFiles();
-      
+
       app.UseRouting().UseCors(CORS);
 
       app.UseAuthorization();
@@ -98,7 +98,7 @@ namespace BibleAPI
             }
             else
             {
-              context.Response.Redirect("/peshitta/index.html");
+              context.Response.Redirect("/index.html");
             }
           });
         endpoints.MapControllers();
