@@ -142,12 +142,12 @@ namespace TestProject1
    //         await dbSqliteContext.SaveChangesAsync();
 
             var text = await dbSqlContext.Text.ToArrayAsync();
-			await dbSqliteContext.Database.ExecuteSqlRawAsync("DELETE FROM Text WHERE TextId>=13117;");
-            dbSqliteContext.AddRange(text);
+		//	await dbSqliteContext.Database.ExecuteSqlRawAsync("DELETE FROM Text WHERE TextId>=13117;");
+          //  dbSqliteContext.AddRange(text);
             await dbSqliteContext.SaveChangesAsync();
 
-            var tw = await dbSqlContext.TextWords.OrderBy(t => t.textid).ThenBy(o=> o.id).ToArrayAsync();
-            dbSqliteContext.TextWords.RemoveRange(dbSqliteContext.TextWords.Where(w => w.textid >= 13117).ToArray());
+            var tw = await dbSqlContext.TextWords.Include(i=>i.Text ).Where(w => w.Text.bookeditionid==28).OrderBy(t => t.textid).ThenBy(o=> o.id).ToArrayAsync();
+            //dbSqliteContext.TextWords.RemoveRange(dbSqliteContext.TextWords.Where(w => w.textid >= 13117).ToArray());
             //	await dbSqliteContext.Database.ExecuteSqlRawAsync("DELETE FROM TextWords;");
             var maxTWID = await dbSqliteContext.TextWords.MaxAsync(m => m.id);
             foreach(var t in tw)
@@ -388,7 +388,7 @@ namespace TestProject1
                     {
                      
                         kitabDb.ActivePublications = new []{ "AB" };
-                        if (!(new[] { 31,32}.Contains(be.bookEditionid )))
+                        if (!(new[] { 33,34}.Contains(be.bookEditionid )))
                         continue;
                     }
                     else
