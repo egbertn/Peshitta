@@ -51,7 +51,7 @@ namespace peshitta.nl
     {
       try
       {
-       
+
         var result = new List<TextExpanded>(textid.Count());
         foreach(var t in textid)
           result.Add(  (await _repo.DecompressVerse(t)).ToDtoModelExpanded());
@@ -128,7 +128,7 @@ namespace peshitta.nl
 
         for (int i = 0; i < parLen; i++)
         {
-          retVal[i] = timeStamps[i].CompareTo(pars.pTimeStamp[i]);
+          retVal[i] = pars.pTimeStamp[i].CompareTo(timeStamps[i]);
         }
 
         return Ok(retVal);
