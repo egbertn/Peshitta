@@ -1,26 +1,29 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    	<SpaRoot>wwwroot\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>obj\Debug\netcoreapp3.1\BibleAPI.xml</DocumentationFile>
+    <DocumentationFile>obj\Debug\net6.0\BibleAPI.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>obj\Release\netcoreapp3.1\BibleAPI.xml</DocumentationFile>
+    <DocumentationFile>obj\Release\net6.0\BibleAPI.xml</DocumentationFile>
     <NoWarn>1701;1702; 1591</NoWarn>
   </PropertyGroup>
 
   
 
   <ItemGroup>
+    <PackageReference Include="MimeKit" Version="3.3.0" />
     <ProjectReference Include="..\Peshitta.Infrastructure\Peshitta.Infrastructure.csproj" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.3.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.3.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="5.3.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="6.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
   </ItemGroup>
 
@@ -33,8 +36,11 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\NewFolder\" />
-  </ItemGroup>
 
+	<ItemGroup>
+		<!-- Don't publish the SPA source files, but do show them in the project files list -->
+		<Content Remove="$(SpaRoot)**" />
+		<None Remove="$(SpaRoot)**" />
+		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+	</ItemGroup>
 </Project>

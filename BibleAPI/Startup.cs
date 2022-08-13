@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using peshitta.nl.Api.Helpers;
+using peshitta.nl.Api.Models;
 using Peshitta.Infrastructure;
 using Peshitta.Infrastructure.Sqlite;
 using System;
@@ -31,11 +33,14 @@ namespace BibleAPI
         options.AddPolicy(CORS,
         builder =>
         {
-          builder.WithOrigins("http://localhost:9000",
+          builder.WithOrigins("http://localhost:8999",
                               "https://www.peshitta.nl").SetIsOriginAllowed(_ => true).WithHeaders("Content-Type", "accept").WithMethods("GET", "POST", "OPTIONS").SetPreflightMaxAge(TimeSpan.FromSeconds(3600)); ;
         });
       });
       // Add framework services.
+      var mp = Configuration.GetValue<string>("MediaPath");
+      var options = new Options { MediaPath = mp };
+      services.AddSingleton(options);
       services.AddTransient<BijbelRepository>()
       .AddDbContext<DbSqlContext>(options =>
       {
@@ -55,7 +60,7 @@ namespace BibleAPI
         var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
         c.IncludeXmlComments(xmlPath);
       });
-
+     services.AddSingleton<PathHelper>();
       services.AddControllers();
       services.AddLogging()
           .AddOptions();

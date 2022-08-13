@@ -8,6 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using peshitta.nl.Api.Helpers;
+using System.IO;
+using Microsoft.Net.Http.Headers;
+using peshitta.nl.Api.Models;
 
 namespace peshitta.nl
 {
@@ -39,8 +43,46 @@ namespace peshitta.nl
         _logger.LogError("Failure {0}", ex);
         return StatusCode(StatusCodes.Status500InternalServerError);
       }
-
     }
+
+    [AcceptVerbs("get", "head", Route ="Download/{file}")]
+		public IActionResult Get(string file, [FromServices] PathHelper _pathHelper, [FromServices] Options _options)
+		{
+			if (string.IsNullOrEmpty(file))
+			{
+				return BadRequest();
+			}
+			if (file.IndexOf('%') > 0)
+			{
+				file = System.Web.HttpUtility.UrlDecode(file);
+			}
+
+			var mimeType = DataMapper.ExtensionMap(file);
+			
+			
+			var uploadedPath = _pathHelper.ExpandPath( _options.MediaPath );
+			
+			var f = Path.Combine(uploadedPath, file);
+			var fi = new FileInfo(f);
+			if (!fi.Exists)
+			{
+				return NotFound();
+			}
+		
+			//avoid file exposure above our website
+			if (!fi.DirectoryName.StartsWith(_pathHelper.GetContentRootPath(), StringComparison.OrdinalIgnoreCase))
+			{
+				return Forbid();
+			}
+			_logger.LogTrace("Returning file {0}", fi.FullName);
+
+	
+			var result = PhysicalFile(fi.FullName, mimeType, new DateTimeOffset(fi.LastWriteTimeUtc, TimeSpan.Zero),
+				new EntityTagHeaderValue($"\"{Path.GetFileNameWithoutExtension(f)}\""));
+			Response.Headers["Cache-Control"] = $"Max-Age={TimeSpan.FromDays(30).TotalSeconds}";
+			return result;
+		}
+    
     /// <summary>
     /// Get multiple verses in one GET operation
     /// </summary>
