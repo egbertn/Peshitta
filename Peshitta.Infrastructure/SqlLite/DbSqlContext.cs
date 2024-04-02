@@ -10,7 +10,7 @@ namespace Peshitta.Infrastructure.Sqlite
         public DbSqlContext(DbContextOptions<DbSqlContext> options)
 		  : base(options)
 		{
-			
+
 		}
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
@@ -19,7 +19,7 @@ namespace Peshitta.Infrastructure.Sqlite
         //	optionsBuilder.UseSqlite(conn);
         //}
         #region modelling
-       
+
         public DbSet<Publication> Publications { get; set; }
         public DbSet<Book> Books { get; set; }
 		public DbSet<BookChapter> BookChapter { get; set; }
@@ -47,7 +47,7 @@ namespace Peshitta.Infrastructure.Sqlite
                 .HasKey(k => k.bookchapterid);
                 p.HasOne(e => e.book).WithMany(m => m.bookchapter).HasForeignKey(f => f.bookid);
                 p.Property(prop => prop.bookchapterid).ValueGeneratedNever();
-                
+
             });
 
 
@@ -56,8 +56,8 @@ namespace Peshitta.Infrastructure.Sqlite
                 p.HasKey(k => new { k.bookchapteralineaid, k.Alineaid });
                 p.ToTable("bookchapteralinea");
                 p.Property(pr => pr.bookchapteralineaid).ValueGeneratedNever();
-                p.HasOne(e => e.bookchapter).WithMany(m => m.bookchapteralinea).HasForeignKey(f => f.bookchapterid);               
-              
+                p.HasOne(e => e.bookchapter).WithMany(m => m.bookchapteralinea).HasForeignKey(f => f.bookchapterid);
+
             });
 
 
@@ -74,17 +74,17 @@ namespace Peshitta.Infrastructure.Sqlite
                 p.Ignore(i => i.Content).Ignore(i => i.Header).Ignore(i => i.Remarks);
             });
 
-          
+
             modelBuilder.Entity<TextWords>(p =>
             {
                 p.ToTable("textwords");
                 p.HasKey(k => k.id);
-                p.Property(k => k.id).ValueGeneratedNever();              
+                p.Property(k => k.id).ValueGeneratedNever();
                 p.HasOne(o => o.words).WithMany(m => m.textwords).HasForeignKey(f => f.wordid);
                 p.HasOne(o => o.Text).WithMany(m => m.TextWords).HasForeignKey(f => f.textid);
 
             });
-            
+
 
             modelBuilder.Entity<TextWordsHistory>( p =>
             {
@@ -94,21 +94,21 @@ namespace Peshitta.Infrastructure.Sqlite
               //  p.HasIndex(i => new { i.textid, i.ArchiveDate }).HasName("ix_archive");
                 p.Property(prop => prop.ArchiveDate).HasColumnType("bigint").HasConversion(from => from.ToUnixTimeMilliseconds() , to => DateTimeOffset.FromUnixTimeMilliseconds(to) );
                 p.HasOne(o => o.words).WithMany(m => m.textwordsHistory).HasForeignKey(f => f.wordid);
-                p.HasOne(o => o.Text).WithMany(m => m.TextWordsHistories).HasForeignKey(f => f.textid);               
+                p.HasOne(o => o.Text).WithMany(m => m.TextWordsHistories).HasForeignKey(f => f.textid);
             });
-           
+
 
             modelBuilder.Entity<words>(p =>
             {
                 p.ToTable("words");
                 p.HasKey(k => k.id);
-                p.HasIndex(k => k.hash).HasName("idx_hash").IsUnique(true);
+                p.HasIndex(k => k.hash).HasDatabaseName("idx_hash").IsUnique(true);
                 p.Property(prop => prop.id).ValueGeneratedNever().IsRequired();
                 p.Property(prop => prop.word).HasColumnType("nvarchar(100)");
             });
-            
 
-            modelBuilder.Entity<bookedition>(p => 
+
+            modelBuilder.Entity<bookedition>(p =>
             {
                 p.ToTable("bookedition");
                 p.HasKey(k => k.bookEditionid);
@@ -116,9 +116,9 @@ namespace Peshitta.Infrastructure.Sqlite
                 p.Property(prop => prop.description).HasMaxLength(1024);
                 p.Property(prop => prop.EnglishTitle).HasMaxLength(256);
                 p.HasOne(o => o.book).WithMany(m => m.bookedition);
-             
+
             });
-            modelBuilder.Entity<Publication>(p => 
+            modelBuilder.Entity<Publication>(p =>
             {
                 p.ToTable("publication")
                 .HasKey(k => k.Code);
@@ -193,12 +193,12 @@ namespace Peshitta.Infrastructure.Sqlite
                 .Ignore(i => i.AddEqual)
                 .Ignore(i => i.AddAmp).Ignore(i => i.PrefixAmp);
             });
-		
+
 		}
 
         #endregion
-      
-       
+
+
 
 
     }

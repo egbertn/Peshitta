@@ -12,6 +12,7 @@ using Peshitta.Infrastructure.Sqlite;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace BibleAPI
 {
@@ -41,26 +42,15 @@ namespace BibleAPI
       var mp = Configuration.GetValue<string>("MediaPath");
       var options = new Options { MediaPath = mp };
       services.AddSingleton(options);
-      services.AddTransient<BijbelRepository>()
+      services.AddScoped<BijbelRepository>()
       .AddDbContext<DbSqlContext>(options =>
       {
         var dbString = Configuration.GetConnectionString("DB");
         options.UseSqlite(dbString);
       });
 
-      services.AddSwaggerGen(c =>
-      {
-        c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-        {
-          Version = "v1",
-          Title = "Bijbel API"
-        });
-        // Set the comments path for the Swagger JSON and UI.
-        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-        c.IncludeXmlComments(xmlPath);
-      });
-     services.AddSingleton<PathHelper>();
+
+      services.AddSingleton<PathHelper>();
       services.AddControllers();
       services.AddLogging()
           .AddOptions();
@@ -80,13 +70,7 @@ namespace BibleAPI
         app.UseExceptionHandler("/Error");
         app.UseHsts();
       }
-      //app.UseDefaultFiles("/index.html");
-      app.UseSwagger();
-      app.UseSwaggerUI(c =>
-      {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bijbel API V1");
 
-      });
 
       app.UseStaticFiles();
 
@@ -95,17 +79,18 @@ namespace BibleAPI
       app.UseAuthorization();
       app.UseEndpoints(endpoints =>
       {
-        endpoints.MapGet("/", async context =>
+        endpoints.MapGet("/", context =>
               {
-            if (env.IsDevelopment())
-            {
-              await context.Response.WriteAsync("Peshitta.Api works");
-            }
-            else
-            {
-              context.Response.Redirect("/index.html");
-            }
-          });
+                if (env.IsDevelopment())
+                {
+                  context.Response.WriteAsync("Peshitta.Api works");
+                }
+                else
+                {
+                  context.Response.Redirect("/index.html");
+                }
+                return Task.CompletedTask;
+              });
         endpoints.MapControllers();
       });
     }

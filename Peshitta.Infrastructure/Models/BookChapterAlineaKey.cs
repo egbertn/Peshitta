@@ -28,7 +28,7 @@ namespace Peshitta.Infrastructure.Models
             {
                 Utils.HashData.Hash(src, bytesCount + 4, (byte*)&hashCode, 4);
             }
-            
+
             return hashCode;
         }
     }
@@ -40,7 +40,7 @@ namespace Peshitta.Infrastructure.Models
         {
             this.bookchapteralineaid = bca;
             this.Alineaid = alinea;
-         
+
         }
         public override bool Equals(object obj)
         {
@@ -55,16 +55,16 @@ namespace Peshitta.Infrastructure.Models
             unchecked
             {
                 byte shiftit = 32;
-                ulong p = (((ulong)bookchapteralineaid << shiftit)) | (ulong)Alineaid;
+                ulong p = ((uint)bookchapteralineaid << shiftit) | (uint)Alineaid;
                 int outp;
                 Utils.HashData.Hash((byte*)&p,8, (byte*)&outp, 4);
-               
+
                 return outp;
                 //p.GetHashCode() does not deliver unique values
             }
-        }     
+        }
 
-     
+
 
         public readonly int bookchapteralineaid;
         public readonly int Alineaid;
