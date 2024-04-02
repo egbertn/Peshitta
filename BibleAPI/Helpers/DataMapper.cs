@@ -1,7 +1,5 @@
 using MimeKit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 namespace peshitta.nl.Api.Helpers;
 public static class DataMapper
 {
@@ -13,5 +11,5 @@ public static string ExtensionMap(string fileName)
 				result = "application/octet";
 			}
 			return result ;
-		}	
+		}
 }

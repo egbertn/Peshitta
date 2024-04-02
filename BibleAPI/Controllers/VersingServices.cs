@@ -5,13 +5,12 @@ using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Peshitta.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Peshitta.Infrastructure;
 
 namespace peshitta.nl.Api
 {
-  [Route("[controller]")]
+  [ApiController]
   public class VersingController(BijbelRepository _repo, ILogger<VersingController> _logger) : ControllerBase
   {
 
