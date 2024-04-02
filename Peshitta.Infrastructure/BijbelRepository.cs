@@ -9,21 +9,15 @@ using System.Threading.Tasks;
 
 namespace Peshitta.Infrastructure
 {
-    public class BijbelRepository
+    public class BijbelRepository(DbSqlContext _context)
     {
-        private static readonly char[] splitters = new[] { ' ', '(', ')', ';', ':','#', ',', '.','‘', '“',
+        private static readonly char[] splitters = [ ' ', '(', ')', ';', ':','#', ',', '.','‘', '“',
                                                             '”', '&', '\'', '-', '"', '[', ']', '?', '!', '<', '>',
-                                                            '=', '/', '*', '\r', '\n', '„', '—', '%', '…', '·', '´'};
+                                                            '=', '/', '*', '\r', '\n', '„', '—', '%', '…', '·', '´'];
 
-        private readonly DbSqlContext _context;
         private static ILookup<int, words> wordsCache;
 
-        private static readonly object locker = new object();
-
-        public BijbelRepository(DbSqlContext context)
-        {
-            _context = context;
-        }
+        private static readonly object locker = new();
 
         public async Task<bool> CompressVerse(int textId,
            DateTimeOffset newTimeStamp,
@@ -948,9 +942,9 @@ namespace Peshitta.Infrastructure
                 QMark = pAddQMark,
                 AddSlashAfter = pAddSlashAfter,
                 AddEqual = pAddEqual,
-                PrefixAmp = pAddAmp
+                PrefixAmp = pAddAmp,
+                words = foundWord
             };
-            tw.words = foundWord;
             t.TextWords.Add(tw);
 
         }
