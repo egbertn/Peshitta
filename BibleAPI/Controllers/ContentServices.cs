@@ -30,7 +30,6 @@ namespace peshitta.nl
       _logger = logger;
     }
     [HttpGet("GetVerse/{pTextId}"), Obsolete("Uses SqliteModel directly use GetVerses")]
-    [ProducesResponseType(StatusCodes.Status200OK)] // do not add type, Swashbuckle will fail
     public async Task<ActionResult> GetVerse(int pTextId)
     {
       try
@@ -40,7 +39,7 @@ namespace peshitta.nl
       }
       catch (Exception ex)
       {
-        _logger.LogError("Failure {0}", ex);
+        _logger.LogError(ex, "Failure" );
         return StatusCode(StatusCodes.Status500InternalServerError);
       }
     }
@@ -58,37 +57,36 @@ namespace peshitta.nl
 			}
 
 			var mimeType = DataMapper.ExtensionMap(file);
-			
-			
+
+
 			var uploadedPath = _pathHelper.ExpandPath( _options.MediaPath );
-			
+
 			var f = Path.Combine(uploadedPath, file);
 			var fi = new FileInfo(f);
 			if (!fi.Exists)
 			{
 				return NotFound();
 			}
-		
+
 			//avoid file exposure above our website
 			if (!fi.DirectoryName.StartsWith(_pathHelper.GetContentRootPath(), StringComparison.OrdinalIgnoreCase))
 			{
 				return Forbid();
 			}
-			_logger.LogTrace("Returning file {0}", fi.FullName);
+			_logger.LogTrace("Returning file {file}", fi.FullName);
 
-	
+
 			var result = PhysicalFile(fi.FullName, mimeType, new DateTimeOffset(fi.LastWriteTimeUtc, TimeSpan.Zero),
 				new EntityTagHeaderValue($"\"{Path.GetFileNameWithoutExtension(f)}\""));
-			Response.Headers["Cache-Control"] = $"Max-Age={TimeSpan.FromDays(30).TotalSeconds}";
+			Response.Headers.CacheControl = $"Max-Age={TimeSpan.FromDays(30).TotalSeconds}";
 			return result;
 		}
-    
+
     /// <summary>
     /// Get multiple verses in one GET operation
     /// </summary>
     /// <param name="textid">an array of textid=number tuples</param>
     [HttpGet("GetVerses")]
-    [ProducesResponseType(typeof(IEnumerable<TextExpanded>),  StatusCodes.Status200OK)]
     public async Task<ActionResult> GetVerses([FromQuery] IEnumerable<int> textid)
     {
       try
@@ -101,13 +99,12 @@ namespace peshitta.nl
       }
       catch (Exception ex)
       {
-        _logger.LogError("Failure {0}", ex);
+        _logger.LogError(ex, "Failure" );
         return StatusCode(StatusCodes.Status500InternalServerError);
       }
 
     }
     [HttpGet("publications")]
-    [ProducesResponseType(typeof(IEnumerable<Peshitta.Infrastructure.Models.Publication>), StatusCodes.Status200OK)]
     public async Task<ActionResult> Publications()
     {
       var result = await _repo.PublicationCodes();
@@ -132,7 +129,7 @@ namespace peshitta.nl
       }
       catch (Exception ex)
       {
-        _logger.LogError("Failure {0}", ex);
+        _logger.LogError(ex, "Failure ");
         return StatusCode(StatusCodes.Status500InternalServerError);
       }
 
@@ -147,7 +144,7 @@ namespace peshitta.nl
       }
       catch (Exception ex)
       {
-        _logger.LogError("Failure {0}", ex);
+        _logger.LogError(ex, "Failure");
         return StatusCode(StatusCodes.Status500InternalServerError);
       }
 
@@ -177,7 +174,7 @@ namespace peshitta.nl
       }
       catch (Exception ex)
       {
-        _logger.LogError("Failure {0}", ex);
+        _logger.LogError(ex, "Failure");
         return StatusCode(StatusCodes.Status500InternalServerError);
       }
 
@@ -217,7 +214,7 @@ namespace peshitta.nl
       }
       catch (Exception ex)
       {
-        _logger.LogError("Failure {0}", ex);
+        _logger.LogError(ex, "Failure");
         return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
       }
     }

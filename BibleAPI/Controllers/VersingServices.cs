@@ -12,19 +12,11 @@ using Peshitta.Infrastructure;
 namespace peshitta.nl.Api
 {
   [Route("[controller]")]
-  public class VersingController : ControllerBase
+  public class VersingController(BijbelRepository _repo, ILogger<VersingController> _logger) : ControllerBase
   {
-    //TODO 
-    private readonly ILogger<VersingController> _logger;
-    private readonly BijbelRepository _repo;
-    public VersingController(BijbelRepository repo, ILogger<VersingController> logger)
-    {
-      _repo = repo;
-      
-      _logger = logger;
-    }
+
+
     [HttpGet("GetBookEditionsFromPub/{pubid}")]
-    [ProducesResponseType(typeof(IEnumerable<int>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetBookEditionsFromPub(string pubid)
     {
       try
@@ -35,7 +27,7 @@ namespace peshitta.nl.Api
       }
       catch (Exception ex)
       {
-        _logger.LogError("Failure {0}", ex);
+        _logger.LogError(ex,"Failure");
         return StatusCode(StatusCodes.Status500InternalServerError);
       }
 
@@ -68,20 +60,19 @@ namespace peshitta.nl.Api
       }
       catch (Exception ex)
       {
-        _logger.LogError("Failure {0}", ex);
+        _logger.LogError(ex,"Failure ");
         return StatusCode(StatusCodes.Status500InternalServerError);
       }
 
     }
 
     [HttpGet("GetVersToolTip/{textid}/{langid}")]
-    [ProducesResponseType(typeof(VerseInfo), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetVersToolTip(int textid, int langid)
     {
       try
       {
         var data = await _repo.GetVerseToolTip(textid, langid);
-        if (data!=null) { 
+        if (data!=null) {
           return Ok(data);
 
         }
@@ -89,7 +80,7 @@ namespace peshitta.nl.Api
       }
       catch (Exception ex)
       {
-        _logger.LogError("Failure {0}", ex);
+        _logger.LogError(ex, "Failure");
         return StatusCode(StatusCodes.Status500InternalServerError);
       }
 
@@ -100,7 +91,7 @@ namespace peshitta.nl.Api
     {
       try
       {
-        var res = await _repo.BookInfoByBookeditionIds(new[] { bookeditionId });
+        var res = await _repo.BookInfoByBookeditionIds([bookeditionId]);
         if (res?.Any() ?? false)
         {
           var data = res.First();
@@ -111,7 +102,7 @@ namespace peshitta.nl.Api
       }
       catch (Exception ex)
       {
-        _logger.LogError("Failure {0}", ex);
+        _logger.LogError(ex, "Failure");
         return StatusCode(StatusCodes.Status500InternalServerError);
       }
 

@@ -3,17 +3,12 @@ using System;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 namespace peshitta.nl.Api.Helpers;
-public class PathHelper
+public class PathHelper(IWebHostEnvironment _env)
 {
-  private readonly IWebHostEnvironment _env;
-  public PathHelper(IWebHostEnvironment env)
-  {
-    _env = env;
-  }
   /// <summary>
   ///  when we configure our app as a Windows service
   ///  the current directory will be C:\\Windows\\system32
-  ///  The content root path should be like e:\service\myapp 
+  ///  The content root path should be like e:\service\myapp
   /// </summary>
 
   public string GetContentRootPath()
@@ -48,7 +43,7 @@ public class PathHelper
   /// ../somepath, c:\\services\\someservice would return c:\\services\\somepath
   /// a fully qualified path is kept untouched
   /// e.g. c:\\somefolder\\lahdidah remains that
-  /// note, does not create path 
+  /// note, does not create path
   /// </summary>
   /// <param name="path">e.g. "./app_data"</param>
   /// <param name="contentPath">cannot be null</param>

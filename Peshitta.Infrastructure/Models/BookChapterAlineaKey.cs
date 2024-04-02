@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Security.Cryptography;
 using System.Text;
+using Peshitta.Infrastructure.Utils;
 
 namespace Peshitta.Infrastructure.Models
 {
@@ -16,20 +18,12 @@ namespace Peshitta.Infrastructure.Models
         {
             return this.GetHashCode() == obj.GetHashCode();
         }
-        public unsafe override int GetHashCode()
+        public override int GetHashCode()
         {
             var bytesCount = Encoding.UTF8.GetByteCount(Word);
-            var bytes = new byte[bytesCount+4];
-
-            Array.Copy(Encoding.UTF8.GetBytes(Word), 0, bytes, 0, bytesCount);
-            Array.Copy(BitConverter.GetBytes(langid), 0, bytes, bytesCount, 4);
-            int hashCode;
-            fixed (byte* src = bytes)
-            {
-                Utils.HashData.Hash(src, bytesCount + 4, (byte*)&hashCode, 4);
-            }
-
-            return hashCode;
+            Span<byte> bytes = stackalloc byte[bytesCount+4];
+            Encoding.UTF8.GetBytes(Word, bytes);
+            return bytes.GetStableHashCode();
         }
     }
 
@@ -55,16 +49,10 @@ namespace Peshitta.Infrastructure.Models
             unchecked
             {
                 byte shiftit = 32;
-                ulong p = ((uint)bookchapteralineaid << shiftit) | (uint)Alineaid;
-                int outp;
-                Utils.HashData.Hash((byte*)&p,8, (byte*)&outp, 4);
-
-                return outp;
-                //p.GetHashCode() does not deliver unique values
+                ulong p = ((ulong)bookchapteralineaid << shiftit) | (uint)Alineaid;
+                return HashCode.Combine(p);
             }
         }
-
-
 
         public readonly int bookchapteralineaid;
         public readonly int Alineaid;

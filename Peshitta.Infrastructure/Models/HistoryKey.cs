@@ -1,17 +1,13 @@
 ﻿using System;
+using Peshitta.Infrastructure.Utils;
 
 namespace Peshitta.Infrastructure.Models
 {
-    public class HistoryKey
+    public class HistoryKey(int textid, DateTime archivedate)
     {
-        public readonly int id;
-        public readonly DateTime ArchiveDate;
+        public readonly int id = textid;
+        public readonly DateTime ArchiveDate = archivedate;
 
-        public HistoryKey(int textid, DateTime archivedate)
-        {
-            id = textid;
-            ArchiveDate = archivedate;
-        }
         public override bool Equals(object obj)
         {
             if (obj is HistoryKey key)
@@ -20,26 +16,14 @@ namespace Peshitta.Infrastructure.Models
             }
             return false;
         }
-        public unsafe override int GetHashCode()
+        public override int GetHashCode()
         {
             //we just use the decimal since that is 16 bytes from which we will use 12 bytes
-            var byts = new byte[12];
+            Span<byte> byts = new byte[sizeof(int)];
+            Span<byte> bytes = stackalloc byte[sizeof(long)];
             var bn = ArchiveDate.ToBinary();
-            fixed (byte* ptr = byts)
-            {
-                *(int*)ptr = id;
-                var newPtr = ptr + sizeof(int);
-                *(long*)newPtr = bn;
-            }
-            
-            // return d.GetHashCode();
-          
-            int hash;
-            fixed (byte* ptr2 = byts)
-            {
-                var result = Utils.HashData.Hash(ptr2, 12, (byte*)&hash, 4);
-                return hash;
-            }
+            BitConverter.TryWriteBytes(bytes, bn);
+            return bytes.GetStableHashCode();
         }
 
     }
