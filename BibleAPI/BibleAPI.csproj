@@ -11,7 +11,8 @@
 
 
   <ItemGroup>
-    <PackageReference Include="MimeKit" Version="4.4.0" />
+    <PackageReference Include="MimeKit" Version="4.7.1" />
+
     <ProjectReference Include="..\Peshitta.Infrastructure\Peshitta.Infrastructure.csproj" />
   </ItemGroup>
 

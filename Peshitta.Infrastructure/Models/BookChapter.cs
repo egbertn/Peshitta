@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿
 using System;
 namespace Peshitta.Infrastructure.Models
 {
@@ -19,7 +19,6 @@ namespace Peshitta.Infrastructure.Models
         public int bookchapterid { get; set; }
         public int bookid { get; set; }
         public int chapter { get; set; }
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string comments { get; set; }
 
         public DateTime TimeStamp { get; set; }

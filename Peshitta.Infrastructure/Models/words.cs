@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
-using Peshitta.Infrastructure.Attributes;
+﻿using Peshitta.Infrastructure.Attributes;
 
 namespace Peshitta.Infrastructure.Models
 {
-    [JsonObject]
     [Cache]
     public class words
     {
@@ -21,13 +19,9 @@ namespace Peshitta.Infrastructure.Models
         }
         public int id { get; set; }
         public string word { get; set; }
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool? IsSymbol { get; set; }
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public short LangId { get; set; }
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool? IsNumber { get; set; }
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? number { get; set; }
     }
 }

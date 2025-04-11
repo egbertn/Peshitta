@@ -15,8 +15,8 @@ using peshitta.nl.Api.Models;
 
 namespace peshitta.nl;
 
-
 [ApiController]
+[Route("Content")]
 public class ContentController(BijbelRepository _repo, ILogger<ContentController> _logger) : ControllerBase
 {
 

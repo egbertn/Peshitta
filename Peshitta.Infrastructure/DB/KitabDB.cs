@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿
 using Peshitta.Infrastructure.Attributes;
 using Peshitta.Infrastructure.Data;
 using Peshitta.Infrastructure.Models;
@@ -6,7 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -15,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Peshitta.Infrastructure.DB
@@ -111,7 +112,7 @@ namespace Peshitta.Infrastructure.DB
                     }
                 }
                 if (path.EndsWith(".json.zz"))
-                {                   
+                {
                     val = fileInfo.LoadUncompress<T>();
 
                 }
@@ -137,7 +138,7 @@ namespace Peshitta.Infrastructure.DB
             {
                 throw new ArgumentOutOfRangeException(nameof(path), "path must not contain an extension");
             }
-            var files = 
+            var files =
                     Ids.Select(s => Path.Combine(_basePath, path, SignificantNumber(s.textId), $"{s.textId}-{s.ArchiveDate.ToString("yyyy-MM-dd HH.mm")}.json.zz"));
 
 
@@ -168,7 +169,7 @@ namespace Peshitta.Infrastructure.DB
                 dict = (IDictionary) value;
                 if (dict.Count > 1000)
                 {
-                    estimate = 1000000; //bigfile                 
+                    estimate = 1000000; //bigfile
                 }
             }
             else if (value is IEnumerable enu)
@@ -184,15 +185,14 @@ namespace Peshitta.Infrastructure.DB
                     }
                 }
             }
-            var ser = new JsonSerializer();
-            var fileS = File.Create(Path.Combine(_basePath, file), estimate, FileOptions.SequentialScan | FileOptions.Asynchronous);
-            var strm = new JsonTextWriter(new StreamWriter(new DeflateStream(fileS, CompressionLevel.Fastest), Encoding.UTF8))
-            {
-                CloseOutput = true
-            };
-
-            ser.Serialize(strm, dict != null ? dict.Values: value);
-            await strm.CloseAsync();
+            // var ser = new JsonSerializer();
+            // var fileS = File.Create(Path.Combine(_basePath, file), estimate, FileOptions.SequentialScan | FileOptions.Asynchronous);
+            // var strm = new JsonTextWriter(new StreamWriter(new DeflateStream(fileS, CompressionLevel.Fastest), Encoding.UTF8))
+            // {
+            //     CloseOutput = true
+            // };
+            Utf8JsonWriter utf8JsonWriter = new (File.OpenWrite(Path.Combine(_basePath, file)));
+            JsonSerializer.Serialize(utf8JsonWriter, dict != null ? dict.Values: value);
 
         }
         /// <summary>
@@ -424,7 +424,7 @@ namespace Peshitta.Infrastructure.DB
                 await WriteAllTextAsync(theDict, Path.Combine(_basePath, t.Name.ToLowerInvariant()) + ".json.zz");
             }
             else if (collectionObj is IList<T> theList)
-            {               
+            {
                 var pos = FindOrdinal(theList, obj);
                 if (pos >= 0)
                 {
@@ -432,7 +432,7 @@ namespace Peshitta.Infrastructure.DB
                 }
                 await WriteAllTextAsync(theList, Path.Combine(_basePath, t.Name.ToLowerInvariant()) + ".json.zz");
             }
-           
+
             return true;
         }
         private void PublicationPossible(string pubCode)
@@ -473,7 +473,7 @@ namespace Peshitta.Infrastructure.DB
             var pubCode = this.Contents.BookEditions[text.bookeditionid].publishercode;
 
             this.ActivePublications = new[] { pubCode };
-          
+
             var copyToHistory = this.Contents.Pubs[pubCode].TextWords == null ?
                     this.LoadFile<IEnumerable<TextWords>>(Path.Combine(pubCode, "textwords"), text.TextId).ToArray():
                     this.Contents.Pubs[pubCode].TextWords[text.TextId].ToArray();
@@ -561,7 +561,7 @@ namespace Peshitta.Infrastructure.DB
                     theWord = content.Substring(startAt, wordLen);
                     // this is the symbol which caused a split on the word
 
-                    //there is a symbol? 
+                    //there is a symbol?
                     // deal with ( [ ' and "
                     // this section deals with symbols before any word such as ( [ - and space
                     if (wordLen == 0)
@@ -683,7 +683,7 @@ namespace Peshitta.Infrastructure.DB
                         //    }
                         //}
                         q:
-                        //compressing space, comma and dot delivers a compressionrate of +/- 20%                       
+                        //compressing space, comma and dot delivers a compressionrate of +/- 20%
                         addComma = ch == ',';
                         addDot = ch == '.';
                         if (!addSpace) addSpace = ch == ' ';
@@ -845,7 +845,7 @@ namespace Peshitta.Infrastructure.DB
                                 }
                             }
 
-                            //we allow symbol + space                                               
+                            //we allow symbol + space
                             //if (mappedSymbol && !addSpace)
                             //{
                             //    if (startAt + wordLen + lookahead > lineLen2)
@@ -906,7 +906,7 @@ namespace Peshitta.Infrastructure.DB
                             }
                             // look ahead for the case of ' or "[space]
                             // now this will be fine
-                            //eg. 'Abraham', a child of God. You see, ' will be seperately encoded. 
+                            //eg. 'Abraham', a child of God. You see, ' will be seperately encoded.
                             // However, ' is followed by a comma and a space. The ' needs two bits set on, the comma and the space.
                             // deal with <span title="Jezus">Jeshua</span>, blah
                             if (foundSplits + 2 < lineLen2)
@@ -934,8 +934,8 @@ namespace Peshitta.Infrastructure.DB
                             false, false,
                             false, false, false, false, false, false, addRSQuote, false, addRDQuote, false, false, false, false, false, false, false, false, false))
                         {
-                          
-                           
+
+
                         }
                         addRDQuote = addRSQuote = false;
                         foundSplits++;
@@ -964,7 +964,7 @@ namespace Peshitta.Infrastructure.DB
             }
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="textid"></param>
         /// <param name="w">The single word to be converted to a number</param>
@@ -982,7 +982,7 @@ namespace Peshitta.Infrastructure.DB
             return foundWord;
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="textid"></param>
         /// <param name="w">The single word to be converted to a number</param>
@@ -1019,7 +1019,7 @@ namespace Peshitta.Infrastructure.DB
                 w = w.ToLower();
             }
             // numbers can become huge, and thus, waste space!
-            bool isNumber = int.TryParse(w, out int number);         
+            bool isNumber = int.TryParse(w, out int number);
             var values = Contents.Words.Values;
             words foundWord = isNumber ? values.SingleOrDefault(f => f.number == number) : values.SingleOrDefault(f => f.word == w);
 
@@ -1028,7 +1028,7 @@ namespace Peshitta.Infrastructure.DB
                 foundWord = new words()
                 {
                     IsNumber = isNumber,
-                
+
                     LangId = t.langid
                 };
                 if (isNumber)
@@ -1084,7 +1084,7 @@ namespace Peshitta.Infrastructure.DB
 
 
             };
-            //tw.word = foundWord;            
+            //tw.word = foundWord;
             lst.Add(tw);
             return didAdd;
         }
@@ -1187,7 +1187,7 @@ namespace Peshitta.Infrastructure.DB
 
             //convert
             // var bookeditionid = this.Contents.BookEditions.Values.FirstOrDefault(w => w.publishercode == pub && w.bookid == bookId);
-            // get chapters 
+            // get chapters
             Text[] textss;
             if (textIdsOpt == null || textIdsOpt.Length == 0)
             {
@@ -1196,7 +1196,7 @@ namespace Peshitta.Infrastructure.DB
                         Where(w => bookChapterIds.Contains(w.BookchapterId)).
                         Select(s => new BookChapterAlineaKey(s.BookchapterAlineaId, s.AlineaId)).ToArray();
 
-                //get textid's 
+                //get textid's
                 textss = this.Contents.Pubs[pub].Texts.Values.
                    Where(w => bookChapterAlineaIds.Any(a => w.Equals(a))).ToArray();
             }
@@ -1221,13 +1221,13 @@ namespace Peshitta.Infrastructure.DB
                     latestDT = t.timestamp;
                 }
             }
-       
+
             var eTAG = CalculateHash(lst, latestDT);
             return Task.FromResult(new Response<TextExpanded>(lst.Count, eTAG, latestDT, lst));
         }
         public IEnumerable<(DateTime ArchiveDate, TextExpanded Text)> LoadHistory(params int[] textIdsOpt)
         {
-           
+
             var lstExpanded = new List<(DateTime, TextExpanded)>();
             foreach (var pub in _activePublications)
 
@@ -1236,7 +1236,7 @@ namespace Peshitta.Infrastructure.DB
                 var path = Path.Combine(pub, "textwordshistory");
                 var verses = LoadFileFromHistory<IEnumerable<TextWordsHistory>>(path, dates);
                 var sb = new StringBuilder();
-               
+
                 foreach (var t in verses.GroupBy(t => new HistoryKey(t.textid, t.ArchiveDate)))
 
                 {
@@ -1245,7 +1245,7 @@ namespace Peshitta.Infrastructure.DB
                     lstExpanded.Add((t.Key.ArchiveDate, unexpand));
                 }
             }
-            return lstExpanded;        
+            return lstExpanded;
         }
         public Task<Response<AlineaText>> LoadChapterAsync(int chapter, int bookEditionId, params int[] textIdsOpt)
         {
@@ -1255,7 +1255,7 @@ namespace Peshitta.Infrastructure.DB
             {
                 //convert
                 // var bookeditionid = this.Contents.BookEditions.Values.FirstOrDefault(w => w.publishercode == pub && w.bookid == bookId);
-                // get chapters 
+                // get chapters
                 Text[] textss;
                 var bookId = this.Contents.BookEditions[bookEditionId].bookid;
                 if (textIdsOpt == null || textIdsOpt.Length == 0)
@@ -1265,7 +1265,7 @@ namespace Peshitta.Infrastructure.DB
                             Where(w => bookChapterIds.Contains(w.BookchapterId)).
                             Select(s => new BookChapterAlineaKey(s.BookchapterAlineaId, s.AlineaId)).ToArray();
 
-                    //get textid's 
+                    //get textid's
                     textss = this.Contents.Pubs[pub].Texts.Values.
                        Where(w => bookChapterAlineaIds.Any(a => w.Equals(a))).ToArray();
                 }
@@ -1290,7 +1290,7 @@ namespace Peshitta.Infrastructure.DB
                     var unexpand = Decompress(t, grouped.Where(w => w.Key == t.TextId).First(), this.Contents.Words, sb);
                     unexpand.Histories = LoadHistory(t.TextId);
                     lst.Add(unexpand);
-              
+
                 }
 
             };
@@ -1378,7 +1378,7 @@ namespace Peshitta.Infrastructure.DB
                 }
 
 
-                //second thought, the first search, could be stored on disk using a Guid. When paging, this could be 'looped', through if 
+                //second thought, the first search, could be stored on disk using a Guid. When paging, this could be 'looped', through if
                 // memory conserving issues are going on. The current search, is completely -inmemory-
                 var eTAG = CalculateHash(lst, _lastFT);
                 //TODO: lastFT oplossen is van 1 file, niet van beide

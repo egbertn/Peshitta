@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 
 namespace Peshitta.Infrastructure.DB
 {
@@ -12,14 +12,8 @@ namespace Peshitta.Infrastructure.DB
     {
         public static T LoadUncompress<T>(this FileInfo fileInfo) where T: class
         {
-            var ser = new JsonSerializer();
-            var jsonReader = new JsonTextReader(new StreamReader(
-               new DeflateStream(
-                   fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.Read),
-                   CompressionMode.Decompress)));
-
-            var ret = ser.Deserialize<T>(jsonReader);
-            jsonReader.Close();
+            //TODO: uncompress first+
+            var ret = JsonSerializer.Deserialize<T>(fileInfo.OpenRead());
             return ret;
         }
 
@@ -42,7 +36,7 @@ namespace Peshitta.Infrastructure.DB
         {
             return type.IsCollection(out Type elementType);
         }
-       
+
         public static bool IsCollection(this Type type, out Type elementType)
         {
             elementType = type ?? throw new ArgumentNullException(nameof(type));

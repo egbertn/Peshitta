@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Peshitta.Infrastructure.Models
@@ -21,7 +20,6 @@ namespace Peshitta.Infrastructure.Models
         public int bookEditionid { get; set; }
         public int bookid { get; set; }
         public string publishercode { get; set; }
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? year { get; set; }
         public string isbn { get; set; }
         public short langid { get; set; }
@@ -32,9 +30,7 @@ namespace Peshitta.Infrastructure.Models
         public IEnumerable<string> keywords { get; set; }
         public string description { get; set; }
         public string robots { get; set; }
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public DateTime? PressDate { get; set; }
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public float? Version { get; set; }
         public string subject { get; set; }
         public string nativeAbbreviation { get; set; }

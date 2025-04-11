@@ -11,6 +11,7 @@ using Peshitta.Infrastructure;
 namespace peshitta.nl.Api
 {
   [ApiController]
+  [Route("Versing")]
   public class VersingController(BijbelRepository _repo, ILogger<VersingController> _logger) : ControllerBase
   {
 

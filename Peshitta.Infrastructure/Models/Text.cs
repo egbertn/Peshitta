@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿
 using System;
 
 namespace Peshitta.Infrastructure.Models
 {
-    [JsonObject]
 
     public class Text
     {
@@ -24,7 +23,7 @@ namespace Peshitta.Infrastructure.Models
             return TextId;
         }
 
-      
+
         public int TextId { get; set; }
         public int BookChapterAlineaid { get; set; }
 
@@ -37,6 +36,6 @@ namespace Peshitta.Infrastructure.Models
         public short langid { get; set; }
 
     }
-   
+
 
 }
